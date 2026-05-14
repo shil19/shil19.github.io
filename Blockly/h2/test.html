@@ -1,0 +1,775 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!---->
+  <title>Custom Blocks & Step Execution with JS Interpreter</title>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<!--
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+-->
+  <script src="../blockly/demos/interpreter/acorn_interpreter.js"></script>
+  <script src="../blockly/blockly_compressed.js"></script>
+  <script src="../blockly/blocks_compressed.js"></script>
+  <script src="../blockly/javascript_compressed.js"></script>
+  <script src="../blockly/msg/js/zh-hant.js"></script>
+
+<!---->
+<script>
+///'use strict';
+///goog.require('Blockly.Www');
+
+/**/
+Blockly.Blocks['start'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldImage("image_f.png", 25, 25, { alt: "*", flipRtl: "FALSE" }));
+    this.appendDummyInput()
+        .appendField("程式開始");
+    this.setInputsInline(true);
+    this.setNextStatement(true, null);
+    this.setColour(65);
+ this.setTooltip("~");
+ this.setHelpUrl("");
+  }
+};
+Blockly.JavaScript['start'] = function(block) {
+  // TODO: Assemble JavaScript into code variable.
+  var code = '\n';
+  return code;
+};
+
+/**/
+Blockly.Blocks['block_move'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldDropdown([["向上","OP_up"], ["向下","OP_down"], ["向左","OP_left"], ["向右","OP_right"]]), "move");
+    this.appendValueInput("steps")
+        .setCheck(null)
+        .appendField("移動");
+    this.appendDummyInput()
+        .appendField("步");  
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(65);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+Blockly.JavaScript['block_move'] = function(block) {
+  var dropdown_move = block.getFieldValue('move');
+  var value_steps = Blockly.JavaScript.valueToCode(block, 'steps', Blockly.JavaScript.ORDER_ATOMIC);
+  // TODO: Assemble JavaScript into code variable.
+  //var code = 'move("' + dropdown_move +'",' + value_steps +');';
+  var code = 'move("' + dropdown_move +'",' + '0' +'); for (i=1;i<='+value_steps+';i++) { move("' + dropdown_move +'",' + '1' +'); }';
+  return code;
+};
+
+/**/
+Blockly.Blocks['power'] = {
+  init: function() {
+    this.appendValueInput("b")
+        .setCheck("Number")
+        .appendField("");  
+    this.appendValueInput("n次方")
+        .setCheck("Number")
+        .appendField("的");
+    this.appendDummyInput()
+        .appendField("次方");  
+    this.setInputsInline(true);
+    this.setOutput(true, null);
+    this.setColour(230);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+Blockly.JavaScript['power'] = function(block) {
+  var value_b = Blockly.JavaScript.valueToCode(block, 'b', Blockly.JavaScript.ORDER_ATOMIC);
+  var value_n__ = Blockly.JavaScript.valueToCode(block, 'n次方', Blockly.JavaScript.ORDER_ATOMIC);
+  // TODO: Assemble JavaScript into code variable.
+  var code = 'Math.pow(' + value_b + ',' + value_n__ +')';
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.JavaScript.ORDER_NONE];
+//return code;
+};
+/**/
+
+</script>
+
+<!---->
+  <style>
+.center {
+  width: 96%;
+  margin: 0 auto;
+}
+@media (min-width:768px){
+body {
+  margin-top: 16px;
+}
+#blocklyDiv {
+  width: 56%;
+}
+.container-fluid {
+  display: none;
+}
+}
+@media (max-width:767px){
+body {
+  margin-top: 70px;
+}
+#blocklyDiv {
+  width: 98%;
+  height: 100vh;
+}
+.container-fluid {
+  display: block;
+}
+}
+  </style>
+</head>
+<body ondragstart="return false" onselectstart="return false" onContextMenu="return false">
+<!--
+<body>
+<p>&nbsp;</p>-->
+<p>Angry Bird 尋找飛機頭 (小心搗蛋豬!!!)</p>
+<p>Test 類別~自製Block測試</p>
+
+<!---->
+<div class="nav navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+                <a class="navbar-brand" href="https://aju-hsieh26-lyit-teacher.on.drv.tw/www/h/" target="_parent"><<< Hsieh >>></a>
+            <ul class="nav nav-tabs">
+                 <li><a data-toggle="tab" href="javascript:void(0);" onclick="blocklyShow()">程式編輯</a></li>
+                <li><a data-toggle="tab" href="javascript:void(0);" onclick="outputShow()">執行畫面</a></li>
+            </ul>
+        </div>
+</div>
+<!---->
+
+  <p>
+    <button onclick="stepCode()" id="stepButton">逐步執行</button> 
+<!----><span id="Xvalue"></span>
+  </p>
+
+  <div class="center">
+<!--
+    <div id="blocklyDiv"
+        style="display: inline-block; height: 600px; width: 56%;"></div>
+-->
+    <div id="blocklyDiv"
+        style="display: inline-block; height: 600px;"></div>
+    <div id="outputDiv" style="display: inline-block; height: 600px; width: 42%" class="center">
+<canvas id="drawCanvas" height=300px width=300px style="display:block; height: 380px; width: 380px"></canvas>
+    <textarea id="output"
+style="display:block; height: 200px; width: 380px;">
+    </textarea>
+    </div>
+  </div>
+
+<!---->
+  <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
+    <category name="Logic" colour="%{BKY_LOGIC_HUE}">
+      <block type="controls_if"></block>
+      <block type="logic_compare"></block>
+      <block type="logic_operation"></block>
+      <block type="logic_negate"></block>
+      <block type="logic_boolean"></block>
+    </category>
+    <category name="Loops" colour="%{BKY_LOOPS_HUE}">
+      <block type="controls_repeat_ext">
+        <value name="TIMES">
+          <block type="math_number">
+            <field name="NUM">10</field>
+          </block>
+        </value>
+      </block>
+      <block type="controls_whileUntil"></block>
+    </category>
+    <category name="Math" colour="%{BKY_MATH_HUE}">
+      <block type="math_number">
+        <field name="NUM">123</field>
+      </block>
+      <block type="math_arithmetic"></block>
+      <block type="math_single"></block>
+    </category>
+    <category name="Test" colour="65">
+      <block type="block_move"></block>
+      <!--<block type="start"></block>
+      <block type="plane_set_seats"></block>
+      <block type="setseats"></block>-->
+      <block type="power"></block>
+   </category>
+    <category name="Text" colour="%{BKY_TEXTS_HUE}">
+      <block type="text"></block>
+      <block type="text_length"></block>
+      <block type="text_print"></block>
+      <block type="text_prompt_ext">
+        <value name="TEXT">
+          <block type="text"></block>
+        </value>
+      </block>
+    </category>
+    <sep></sep>
+    <category name="Variables" custom="VARIABLE" colour="%{BKY_VARIABLES_HUE}">
+    </category>
+    <category name="Functions" custom="PROCEDURE" colour="%{BKY_PROCEDURES_HUE}">
+    </category>
+  </xml>
+<!---->
+  <xml xmlns="https://developers.google.com/blockly/xml" id="startBlocks" style="display: none">
+
+  <block type="start" deletable="false" x="20" y="20">
+<next>
+<block type="block_move">
+<field name="move">OP_right</field>
+                  <value name="steps">
+                    <block type="math_number">
+                      <field name="NUM">2</field>
+                    </block>
+                  </value>
+
+<next>
+<block type="block_move">
+<field name="move">OP_down</field>
+                  <value name="steps">
+                    <block type="math_number">
+                      <field name="NUM">3</field>
+                    </block>
+                  </value>
+</block>
+</next>
+</block>
+</next>
+</block>
+
+    <block type="variables_set" id="set_n_initial" inline="true" x="20" y="200">
+      <field name="VAR">n</field>
+      <value name="VALUE">
+        <block type="math_number">
+          <field name="NUM">1</field>
+        </block>
+      </value>
+      <next>
+        <block type="controls_repeat_ext" id="repeat" inline="true">
+          <value name="TIMES">
+            <block type="math_number">
+              <field name="NUM">2</field>
+            </block>
+          </value>
+          <statement name="DO">
+            <block type="variables_set" id="set_n_update" inline="true">
+              <field name="VAR">n</field>
+              <value name="VALUE">
+                <block type="math_arithmetic" inline="true">
+                  <field name="OP">MULTIPLY</field>
+                  <value name="A">
+                    <block type="variables_get">
+                      <field name="VAR">n</field>
+                    </block>
+                  </value>
+                  <value name="B">
+                    <block type="math_number">
+                      <field name="NUM">2</field>
+                    </block>
+                  </value>
+                </block>
+              </value>
+              <next>
+                <block type="text_print" id="print">
+                  <value name="TEXT">
+                    <block type="variables_get">
+                      <field name="VAR">n</field>
+                    </block>
+                  </value>
+                </block>
+              </next>
+            </block>
+          </statement>
+        </block>
+      </next>
+    </block>
+  
+  </xml>
+<!---->
+  <script>
+    var demoWorkspace = Blockly.inject('blocklyDiv',
+        {grid:
+          {spacing: 25,
+           length: 5,
+           colour: 'green',
+           snap: true},
+         media: '../blockly/media/',
+         rtl: false,
+         toolbox: document.getElementById('toolbox')});
+    Blockly.Xml.domToWorkspace(document.getElementById('startBlocks'),
+                               demoWorkspace);
+    demoWorkspace.addChangeListener(Blockly.Events.disableOrphans);
+
+/**/
+function random(min,max) {
+    var num = Math.floor(Math.random()*(max-min)) + min;
+    return num;
+}
+
+/**/
+var canvas = document.getElementById("drawCanvas");
+var ctx = canvas.getContext("2d");
+
+ctx.fillStyle = "rgba(" + random(0,255) + "," + random(0,255) + "," + random(0,255) + ",1)"; 
+
+var x=-4, y=-4;
+var w=80, h=80; 
+var g_x=random(3,10)-5, g_y=random(3,10)-5; //目標
+var dir="0"; //方向
+var step=0; //步數
+//var passed=false ; //成功否
+var touchX=false; //碰到障礙否
+var hdr; //動畫返回值
+var X_image=[]; //障礙
+var X_xy=[[-3,-4],[-4,-3]]; //障礙
+X_xy[0][0]=random(-3,g_x-1); //障礙
+X_xy[1][1]=random(-3,g_y-1); //障礙
+var X_image_xy=[[500,500],[500,500]];
+var dy=0, Xdir=1;
+var Xcount=0;
+//
+var imgdir='r';
+var images = {}; // 使用对象来存储图片帧，key为帧索引，value为图片对象
+
+        // 加载所有图片
+        function loadImages() {
+//            for (var i = 0; i < frameCount; i++) {
+                var img = new Image();
+                img.src = 'image_f2.png';
+                images['f'] = img;
+                var img = new Image();
+                img.src = 'image_l.png';
+                images['l'] = img;
+                var img = new Image();
+                img.src = 'image_b.png';
+                images['b'] = img;
+                var img = new Image();
+                img.src = 'image_r.png';
+                images['r'] = img;
+//            }
+        }
+loadImages();
+//
+// 障礙
+for(var i=0;i<2;i++){
+    (function(index) {
+      X_image[index] = new Image();
+      X_image[index].onload = function() { 
+      X_image_xy[index][0]=150+30*X_xy[index][0]-w/4;
+      X_image_xy[index][1]=150+30*X_xy[index][1]-h/4;
+      //ctx.drawImage(X_image[index],150+30*X_xy[index][0]-w/4,150+30*X_xy[index][1]-h/4, w/2, h/2); 
+      ctx.drawImage(X_image[index],X_image_xy[index][0],X_image_xy[index][1], w/2, h/2); 
+      } 
+      X_image[index].src = 'Bad_Piggies2.png';
+    })(i);
+}
+//目標
+goal_image = new Image(); 
+goal_image.onload = function() { 
+ctx.drawImage(goal_image,150+30*g_x-w/4,150+30*g_y-h/4, w/2, h/2);
+} 
+goal_image.src = '../blockly/demos/plane/icon.png';
+// 憤怒鳥
+/*
+image = new Image(); 
+image.onload = function() { 
+ctx.drawImage(image,150+30*x-w/4,150+30*y-h/4, w/2, h/2); 
+} 
+image.src = 'image_r.png';
+*/
+ctx.drawImage(images[imgdir],150+30*x-w/4,150+30*y-h/4, w/2, h/2); 
+
+/**/
+function Drawing()
+{
+  ctx.clearRect(0,0,300,300);
+  ctx.fillText("O",150,150);
+  ctx.beginPath();
+  for(var i = 0; i <= 300; i = i + 30)
+    {
+      ctx.moveTo( i ,0);
+      ctx.lineTo( i ,300);
+    }
+  for(var i = 0; i <= 300; i = i + 30)
+    {
+      ctx.moveTo(0, i );
+      ctx.lineTo(300, i );
+    }
+  ctx.stroke();
+  ctx.closePath();
+  ctx.beginPath();
+  ctx.arc(150+30*x,150+30*y,10,0,Math.PI*2,false);
+  ctx.fill();
+  ctx.closePath();
+/*
+  ctx.beginPath();
+  ctx.arc(150+30*X_xy[0][0],150+30*X_xy[0][1],3,0,Math.PI*2,false); //障礙
+  ctx.fill();
+  ctx.closePath();
+  ctx.beginPath();
+  ctx.arc(150+30*X_xy[1][0],150+30*X_xy[1][1],3,0,Math.PI*2,false); //障礙
+  ctx.fill();
+  ctx.closePath();
+*/
+
+if(Xcount==0){
+dy+=0.02;}
+else{
+Xcount++;
+if(Xcount>10) Xcount=0;}
+if(dy>3) {
+dy=0;
+Xdir=Xdir*(-1);
+Xcount++;
+//document.getElementById("Xvalue").innerHTML+=Xdir;///
+}
+
+for(var i=0;i<2;i++){ //障礙
+   //ctx.drawImage(X_image[i],150+30*X_xy[i][0]-w/5,150+30*X_xy[i][1]-h/5, w/2.5, h/2.5); 
+if(Xdir==1){
+      ctx.drawImage(X_image[i],X_image_xy[i][0],X_image_xy[i][1]-0, w/2, h/2); 
+}
+else{
+      ctx.scale(-1, 1);
+      ctx.drawImage(X_image[i],-(X_image_xy[i][0]+w/2),X_image_xy[i][1]-0, w/2, h/2); 
+      ctx.scale(-1, 1);
+}
+}
+  ///ctx.drawImage(X_image,150+30*X_xy[0][0]-w/6,150+30*X_xy[0][1]-h/6, w/3, h/3); //障礙
+      //ctx.scale(-1, 1);///
+  ctx.drawImage(goal_image,150+30*g_x-w/4,150+30*g_y-h/4, w/2, h/2);
+  //ctx.drawImage(image,150+30*x-w/4,150+30*y-h/4-dy, w/2, h/2);
+ctx.drawImage(images[imgdir],150+30*x-w/4,150+30*y-h/4, w/2, h/2); 
+//
+      //ctx.scale(1, 1);///
+hdr = requestAnimationFrame(Drawing);
+}
+
+/**/
+function recalXY()
+{
+if (step>0)
+  {
+    if(dir=="OP_up")
+     {
+       y--;
+       //image.src = './image_b.png';
+     }
+   else if(dir=="OP_down")
+     {
+       y++;
+       //image.src = './image_f.png';
+     }
+   else if(dir=="OP_left")
+     {
+       x--;
+       //image.src = './image_l.png';
+     }
+   else if(dir=="OP_right")
+     {
+       x++;
+       //image.src = './image_r.png';
+     }
+   step--;
+///
+   for(var i=0;i<2;i++) {
+      if(x==X_xy[i][0] && y==X_xy[i][1]) touchX=true;
+   }
+    //document.getElementById("Xvalue").innerHTML=X_xy[0][0]+","+X_xy[0][1]+","+touchX+","+X_xy[1][0]+","+X_xy[1][1];
+///
+   //Drawing();
+   //hdr = requestAnimationFrame(recalXY);//
+   ///isPass();//
+  }
+else
+  {
+   if(dir=="OP_up")
+     {
+       //y--;
+       //image.src = 'image_b.png';
+       imgdir='b';
+     }
+   else if(dir=="OP_down")
+     {
+       //y++;
+       //image.src = 'image_f.png';
+       //image.src = 'image_f2.png';
+       imgdir='f';
+     }
+   else if(dir=="OP_left")
+     {
+       //x--;
+       //image.src = 'image_l.png';
+       imgdir='l';
+     }
+   else if(dir=="OP_right")
+     {
+       //x++;
+       //image.src = 'image_r.png';
+       imgdir='r';
+     }
+   //Drawing();
+   //cancelAnimationFrame(hdr);
+  }
+  //cancelAnimationFrame(hdr);
+//requestAnimationFrame(drawXY);///
+}
+
+/**/
+function isPass()
+{
+   if(x == g_x && y == g_y )
+   {
+      //passed = true ;
+      outputArea.value += '\n 成功';
+      var again = confirm('尋獲目標物!!!\n再玩嗎？');
+      if ( again ) 
+        {window.location.reload();}
+   }
+   else
+   {
+      //passed = false;
+      if ( touchX ) 
+        {
+          outputArea.value += '\n 再接再厲';
+          alert("要避開搗蛋豬哦!!!");
+        }
+      else
+        {
+          outputArea.value += '\n 再接再厲';
+          alert("未尋獲目標物，再接再厲!!!");
+        }
+   }
+/*
+   if (passed)
+   {
+      outputArea.value += '\n 成功';
+      var again = confirm('成功!!!\n再玩嗎？');
+      if ( again ) 
+        {window.location.reload();}
+   }
+   else
+   {
+      outputArea.value += '\n 再接再厲';
+      alert("再接再厲!!!");
+   }
+*/
+}
+
+/**/
+function paintImg(direction,steps) {
+   dir=direction;
+   step=steps;
+   //hdr = requestAnimationFrame(recalXY);
+recalXY();
+   ///setInterval("isPass()",200);
+} //paintImg(direction,steps)
+
+/**/
+paintImg("0",0);
+//
+//paintImg("OP_down",7);///
+//paintImg("OP_up",1);///
+//var dx=0;
+///document.getElementById("Xvalue").innerHTML=X_image_xy[0][0]+","+X_image_xy[0][1]+","+dy;//
+function drawXY(){
+/*
+  ctx.beginPath();
+  ctx.arc(150+dy,150, 13,0,Math.PI*2,false);
+  ctx.fill();
+  ctx.closePath();
+  //dy++;
+*/
+/**/
+  dy+=0.01;
+if(dy>5) dy=0;
+for(var i=0;i<2;i++){ //障礙
+    (function(index) {
+   ctx.clearRect(X_image_xy[index][0]+3,X_image_xy[index][1]+6,w/2-6,h/2-6);
+   //ctx.drawImage(X_image[i],150+30*X_xy[i][0]-w/5,150+30*X_xy[i][1]-h/5, w/2.5, h/2.5); 
+      ctx.drawImage(X_image[index],X_image_xy[index][0],X_image_xy[index][1]+dy, w/2, h/2); 
+/*
+  ctx.beginPath();
+  ctx.arc(X_image_xy[i][0],X_image_xy[i][1]+dy, 13,0,Math.PI*2,false);
+  ctx.fill();
+  ctx.closePath();
+*/
+///document.getElementById("Xvalue").innerHTML=":"+X_image_xy[index][0]+","+X_image_xy[index][1]+","+dy;//
+    })(i);
+}
+/**/
+  //hdr = requestAnimationFrame(drawXY);
+}
+//hdr = requestAnimationFrame(drawXY);
+hdr = requestAnimationFrame(Drawing);
+//
+
+//
+    var outputArea = document.getElementById('output');
+    var stepButton = document.getElementById('stepButton');
+    var myInterpreter = null;
+
+    function initApi(interpreter, scope) {
+      // Add an API function for the alert() block, generated for "text_print" blocks.
+      interpreter.setProperty(scope, 'alert',
+          interpreter.createNativeFunction(function(text) {
+        text = text ? text.toString() : '';
+        outputArea.value += '\n' + text;
+      }));
+//
+      interpreter.setProperty(scope, 'move',
+          interpreter.createNativeFunction(function(text1,text2) {
+        //text1 = text1 ? text.toString() : '';
+        //text2 = text2 ? text.toString() : '';
+        paintImg(text1,text2);
+      }));
+//
+      // Add an API function for the prompt() block.
+      var wrapper = function(text) {
+        text = text ? text.toString() : '';
+        return interpreter.createPrimitive(prompt(text));
+      };
+      interpreter.setProperty(scope, 'prompt',
+          interpreter.createNativeFunction(wrapper));
+
+      // Add an API function for highlighting blocks.
+      var wrapper = function(id) {
+        id = id ? id.toString() : '';
+        return interpreter.createPrimitive(highlightBlock(id));
+      };
+      interpreter.setProperty(scope, 'highlightBlock',
+          interpreter.createNativeFunction(wrapper));
+    } // initApi
+
+    var highlightPause = false;
+    var latestCode = '';
+
+    function highlightBlock(id) {
+      demoWorkspace.highlightBlock(id);
+      highlightPause = true;
+    }
+
+    function resetStepUi(clearOutput) {
+      demoWorkspace.highlightBlock(null);
+      highlightPause = false;
+
+      if (clearOutput) {
+        outputArea.value = '程式輸出 (Program output) :\n=================';
+      }
+    }
+
+    function generateCodeAndLoadIntoInterpreter() {
+      // Generate JavaScript code and parse it.
+      Blockly.JavaScript.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
+      Blockly.JavaScript.addReservedWords('highlightBlock');
+      latestCode = Blockly.JavaScript.workspaceToCode(demoWorkspace);
+      //resetStepUi(true);
+}
+
+    function stepCode() {
+//document.getElementById("Xvalue").innerHTML+=latestCode+">";///
+      if (!myInterpreter) {
+        // First statement of this code.
+        resetStepUi(true);
+        myInterpreter = new Interpreter(latestCode, initApi);
+
+//document.getElementById("Xvalue").innerHTML+=latestCode;///
+        // And then show generated code in an alert.
+        // In a timeout to allow the outputArea.value to reset first.
+/*
+        setTimeout(function() {
+          alert('Ready to execute the following code\n' +
+            '===================================\n' + latestCode);
+          stepCode();
+        }, 1);
+        return;
+*/
+//document.getElementById("Xvalue").innerHTML+=">";///
+      }
+  /**/
+      function nextStep() {
+//document.getElementById("Xvalue").innerHTML+=":";///
+        if (myInterpreter.step()) {
+          //stepButton.disabled = 'disabled';
+          //window.setTimeout(nextStep, 20);
+/**/
+          if (touchX) {
+            setTimeout( isPass ,20);
+            myInterpreter = null;
+            resetStepUi(false);
+          }
+          else {
+            stepButton.disabled = 'disabled';
+            window.setTimeout(nextStep, 20);
+          }
+/**/
+        }
+        else
+        {
+          setTimeout( isPass ,200);
+          outputArea.value += '\n\n程式執行結束\n';
+          stepButton.disabled = ''; // false ;
+          myInterpreter = null;
+          resetStepUi(false);
+        }
+      }
+//document.getElementById("Xvalue").innerHTML+=".";///
+      nextStep();
+  /**/
+    } //function stepCode
+
+    // Load the interpreter now, and upon future changes.
+    generateCodeAndLoadIntoInterpreter();
+    demoWorkspace.addChangeListener(function(event) {
+      if (!(event instanceof Blockly.Events.Ui)) {
+        // Something changed. Parser needs to be reloaded.
+        generateCodeAndLoadIntoInterpreter();
+      }
+    });
+
+  </script>
+
+  <script>
+  function blocklyShow(){
+     document.getElementById("blocklyDiv").style.display = 'inline-block';
+     document.getElementById("outputDiv").style.display = 'none';
+  }
+
+  function outputShow(){
+     document.getElementById("blocklyDiv").style.display = 'none';
+     document.getElementById("outputDiv").style.display = 'inline-block';
+  }
+
+// 使用 window.matchMedia() 檢查媒體查詢狀態，並根據需要調用相應的函數
+function handleScreenSizeChange(mql) {
+  if (mql.matches) {
+    // 媒體查詢符合條件，例如螢幕寬度大於 768px
+     document.getElementById("blocklyDiv").style.display = 'inline-block';
+     document.getElementById("outputDiv").style.display = 'inline-block';
+  } else {
+    // 媒體查詢不符合條件，例如螢幕寬度小於等於 768px
+    outputShow(); // 調用顯示 output 的函數
+  }
+}
+
+// 創建媒體查詢對象，監聽屏幕尺寸變化
+var mql = window.matchMedia("(min-width: 768px)");
+
+// 註冊媒體查詢變化時的事件處理函數
+mql.addListener(handleScreenSizeChange);
+
+// 初始化時，根據初始媒體查詢狀態執行一次處理函數
+handleScreenSizeChange(mql);
+
+  </script>
+</body>
+</html>
