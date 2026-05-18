@@ -1,0 +1,477 @@
+
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Webduino Blockly Demo 09</title>
+  <script src="https://bit.webduino.io/blockly/components/jquery/dist/jquery.min.js"></script>
+  <script src="https://bit.webduino.io/blockly/dist/lib/webduino-all.min.js"></script>
+  <script src="https://bit.webduino.io/blockly/dist/MessageTransport.min.js"></script>
+  <script src="https://bit.webduino.io/blockly/dist/webduino-blockly.min.js"></script>
+  <script src="https://bit.webduino.io/blockly/dist/lib/firebase.min.js"></script>
+  <script src="https://bit.webduino.io/blockly/dist/lib/runtime.min.js"></script>
+  <script src="https://bit.webduino.io/blockly/components/webduino-bit-module-led-matrix/BitLedMatrix-blockly.js"></script>
+  <script src="https://bit.webduino.io/blockly/components/webduino-bit-module-led-matrix/BitLedMatrix.js"></script>
+  <script src="https://bit.webduino.io/blockly/components/webduino-bit-module-button/BitButton.js"></script>
+  <script src="https://bit.webduino.io/blockly/components/webduino-bit-module-button/BitButton-blockly.js"></script>
+<script src="https://bit.webduino.io/blockly/dist/code-checkDeviceOnline.min.js"></script><!---->
+
+<style id="jsbin-css">
+
+html,body{
+  font-family:'Verdana';
+  background:#333;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#demo-area-09-controller{
+  position:relative;
+  box-sizing:border-box;
+  width:100%;
+  max-width:550px;
+  padding:20px 10px;
+  margin:0 auto;
+  overflow: hidden;
+  pointer-events: auto!important;
+}
+.demo-area-09-btn{
+  position:relative;
+  display:inline-block;
+  width:calc(33% - 8px);
+  height:60px;
+  background:#555;
+  margin:3px 1px;
+  text-align:center;
+  line-height:60px;
+  border-radius:5px;
+  color:#fff;
+  font-size:22px;
+  vertical-align: middle;
+  cursor:pointer;
+}
+.demo-area-09-btn:active{
+  background:#777;
+}
+@media (max-width:480px){
+  .demo-area-09-btn{
+    height:50px;
+    line-height:50px;
+    font-size:20px;
+  }
+}
+@media (max-width:400px){
+  .demo-area-09-btn{
+    height:45px;
+    line-height:45px;
+    font-size:18px;
+  }
+}
+.demo-area-09-btn.btn-power{
+  background:#d00;
+  height:60px;
+  width:60px;
+  border-radius:50%;
+  margin-bottom:10px;
+}
+.demo-area-09-btn.btn-power:active{
+  background:#f22;
+}
+.demo-area-09-btn.btn-show{
+  background:#357;
+  width:calc(100% - 80px);
+  margin-left:5px;
+  color:#acf;
+  margin-bottom:10px;
+  cursor:default;
+}
+@media (max-width:480px){
+  .demo-area-09-btn.btn-power{
+    height:50px;
+    width:50px;
+  }
+  .demo-area-09-btn.btn-show{
+    width:calc(100% - 70px);
+    margin-left:5px;
+    overflow:hidden;
+  }
+}
+@media (max-width:400px){
+  .demo-area-09-btn.btn-power{
+    height:45px;
+    width:45px;
+  }
+  .demo-area-09-btn.btn-show{
+    width:calc(100% - 60px);
+    margin-left:3px;
+  }
+}
+.demo-area-09-btn-group{
+  width:100%;
+  text-align:center;
+}
+.demo-area-09-btn.btn-range{
+  position:relative;
+  width:calc(100% - 20px);
+  height:20px;
+  display:block;
+  margin:25px auto;
+  background:#222;
+  cursor:default;
+}
+.demo-area-09-btn.btn-range-bar{
+  position:absolute;
+  width:32px;
+  height:50px;
+  top:-20px;
+  left:0;
+  background:#555;
+  line-height:50px;
+}
+.demo-area-09-btn.btn-range-bar:active{
+  background:#777;
+}
+.demo-area-09-btn-group.btn-direction-group{
+  margin-bottom:10px;
+}
+.demo-area-09-btn-group.btn-direction-group .demo-area-09-btn{
+  height:80px;
+  line-height:80px;
+}
+.demo-area-09-btn-group.btn-player-group{
+  margin-bottom:5px;
+}
+
+@media (max-width:480px){
+  .demo-area-09-btn-group.btn-direction-group .demo-area-09-btn{
+    height:70px;
+    line-height:70px;
+  }
+}
+@media (max-width:400px){
+  .demo-area-09-btn-group.btn-direction-group .demo-area-09-btn{
+    height:60px;
+    line-height:60px;
+  }
+}
+.demo-area-09-btn-group.btn-player-group .demo-area-09-btn{
+  width:calc(20% - 10px);
+  margin:5px 2px;
+}
+.demo-area-09-btn-group.btn-player-group .btn-pre{
+  font-size:14px;
+}
+.demo-area-09-btn-group.btn-player-group .btn-next{
+  font-size:14px;
+}
+
+.demo-area-09-btn-group.btn-menu-group .demo-area-09-btn{
+  width:calc(25% - 10px);
+  margin:5px 2px;
+}
+.demo-area-09-btn-group.btn-menu-group .btn-color1{
+  background:#d00;
+}
+.demo-area-09-btn-group.btn-menu-group .btn-color1:active{
+  background:#f22;
+}
+.demo-area-09-btn-group.btn-menu-group .btn-color2{
+  background:#0a0;
+}
+.demo-area-09-btn-group.btn-menu-group .btn-color2:active{
+  background:#2d2;
+}
+.demo-area-09-btn-group.btn-menu-group .btn-color3{
+  background:#09c;
+}
+.demo-area-09-btn-group.btn-menu-group .btn-color3:active{
+  background:#3bf;
+}
+.demo-area-09-btn-group.btn-menu-group .btn-color4{
+  background:#fb0;
+}
+.demo-area-09-btn-group.btn-menu-group .btn-color4:active{
+  background:#ff8;
+}
+
+.demo-area-09-input{
+  margin:25px auto;
+  -webkit-appearance: none;
+  border-radius:2px;
+  width:calc(100% - 8px);
+  height:20px;
+  background:none;
+  background-image:-webkit-linear-gradient(left ,#246 0%,#246 50%,#222 50%, #222 100%);
+  outline : none;
+  transition:.1s;
+  cursor:pointer;
+}
+.demo-area-09-input::-webkit-slider-thumb{
+  -webkit-appearance: none;
+  width:32px;
+  height:50px;
+  background:#555;
+  border-radius:5px;
+  transition:.1s;
+}
+
+.demo-area-09-input::-webkit-slider-thumb:hover,
+.demo-area-09-input::-webkit-slider-thumb:active{
+  background:#777;
+}
+
+</style>
+</head>
+<!--
+.demo-area-09-btn.btn-con{
+  background:#d00;
+  height:60px;
+  width:60px;
+  border-radius:50%;
+  margin-bottom:10px;
+}
+
+-->
+<script>
+///
+//var devID = document.getElementById('devID');
+//var devId = document.getElementById('input-device');
+///
+</script>
+
+<body>
+輸入欲與網頁互動的 Web bit DeviceID ： <input type="text" name="dD" id="devID">
+<!--<div class="demo-area-09-btn btn-center">○</div>--><!--<div class="demo-area-09-btn btn-con">○</div><button id="bConnect">連線</button>-->
+<!----><!--欲連線 Web bit DeviceID ： <input type="text" name="dD" id="devID" onkeypress="if (event.keyCode == 13) {checkConnect(devID.value);}">
+ <button onclick="checkConnect('bitd9356');">連線</button>-->
+<!-- <button onclick="alert('bitd9356');">測試</button>-->
+<!--<input type="button" value="連線" onclick="checkConnect(devID.value)">-->
+<!-- <input type="text" name="dD" id="input-device"><button id="check-btn">連線</button>--><!-- onkeypress="if (event.keyCode == 13) {checkConnect(devID.value);}">-->
+  <div>
+    <div id="demo-area-09" class="da">
+      <div id="demo-area-09-content">
+        <div id="demo-area-09-controller">
+<!--          <div class="demo-area-09-btn btn-power">○</div>-->
+          <div class="demo-area-09-btn btn-power">連線</div>
+          <div class="demo-area-09-btn btn-show">顯示</div>
+<!--
+          <div class="demo-area-09-btn-group btn-number-group">
+            <div class="demo-area-09-btn btn-num1">1</div>
+            <div class="demo-area-09-btn btn-num2">2</div>
+            <div class="demo-area-09-btn btn-num3">3</div>
+            <div class="demo-area-09-btn btn-num4">4</div>
+            <div class="demo-area-09-btn btn-num5">5</div>
+            <div class="demo-area-09-btn btn-num6">6</div>
+            <div class="demo-area-09-btn btn-num7">7</div>
+            <div class="demo-area-09-btn btn-num8">8</div>
+            <div class="demo-area-09-btn btn-num9">9</div>
+            <div class="demo-area-09-btn btn-num11">#</div>
+            <div class="demo-area-09-btn btn-num0">0</div>
+            <div class="demo-area-09-btn btn-num12">*</div>
+          </div>
+-->
+<!--
+          <input type="range" min="0" max="180" step="5" value="90" class="demo-area-09-input">
+-->
+          <div class="demo-area-09-btn-group btn-direction-group">
+            <div class="demo-area-09-btn btn-up">▲</div>
+            <br>
+            <div class="demo-area-09-btn btn-left">◀</div>
+            <div class="demo-area-09-btn btn-center">●</div>
+            <div class="demo-area-09-btn btn-right">▶</div>
+            <br>
+            <div class="demo-area-09-btn btn-down">▼</div>
+          </div>
+<!--
+          <div class="demo-area-09-btn-group btn-player-group">
+            <div class="demo-area-09-btn btn-pre">◀◀</div>
+            <div class="demo-area-09-btn btn-stop">■</div>
+            <div class="demo-area-09-btn btn-play">▶</div>
+            <div class="demo-area-09-btn btn-pause">❙ ❙</div>
+            <div class="demo-area-09-btn btn-next">▶▶</div>
+          </div>
+          <div class="demo-area-09-btn-group btn-menu-group">
+            <div class="demo-area-09-btn btn-color1"></div>
+            <div class="demo-area-09-btn btn-color2"></div>
+            <div class="demo-area-09-btn btn-color3"></div>
+            <div class="demo-area-09-btn btn-color4"></div>
+          </div>
+-->
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script id="jsbin-javascript">
+
+(async function () {
+
+var matrix;
+
+function getElement(dom) {
+  var element = document.querySelector(dom);
+  return element;
+}
+
+function controllerBtnEvent(c,e,callback) {
+  if(e!="click"){
+    var _u = navigator.userAgent;
+    if(_u.indexOf("Android") > -1 || _u.indexOf("iPhone") > -1 || _u.indexOf("iPad") > -1){
+      c.addEventListener(e[1], function(){
+        callback();
+      });
+    }else{
+      c.addEventListener(e[0], function(){
+        callback();
+      });
+    }
+  }else{
+      c.addEventListener("click", function(){
+        callback();
+      });
+  }
+}
+
+///
+var devID = document.getElementById('devID');
+//var bConnect = document.getElementById('bConnect');
+//bConnect.onclick = alert(devID.value);//checkConnect(devID.value);///ok?一開始就執行
+//document.getElementById('bConnect').onclick = alert(devID.value);///一開始就執行
+///
+
+/*  controllerBtnEvent(document.getElementById('bConnect'),"click", function(){
+    document.querySelector("#demo-area-09 .btn-show").innerHTML = '確認連線';
+  });///不ok
+*/
+/*
+  controllerBtnEvent(getElement("#demo-area-09 .btn-con"),"click", function(){
+    document.querySelector("#demo-area-09 .btn-show").innerHTML = '確認連線';//
+checkConnect(devID.value);///ok?
+  });
+*/
+//
+  controllerBtnEvent(getElement("#demo-area-09 .btn-power"),"click", function(){
+    document.querySelector("#demo-area-09 .btn-show").innerHTML = '確認連線';///'○';///'顯示';
+//checkConnect(input-device.value);/// ?
+//checkConnect('bitd9356');///OK
+checkConnect(devID.value);///OK
+  });
+  controllerBtnEvent(getElement("#demo-area-09 .btn-up"),"click", function(){
+    document.querySelector("#demo-area-09 .btn-show").innerHTML = '↑';
+  });
+  controllerBtnEvent(getElement("#demo-area-09 .btn-down"),"click", function(){
+    document.querySelector("#demo-area-09 .btn-show").innerHTML = '↓';
+  });
+  controllerBtnEvent(getElement("#demo-area-09 .btn-left"),"click", function(){
+    document.querySelector("#demo-area-09 .btn-show").innerHTML = '←';
+  });
+  controllerBtnEvent(getElement("#demo-area-09 .btn-right"),"click", function(){
+    document.querySelector("#demo-area-09 .btn-show").innerHTML = '→';
+  });
+/**/
+  controllerBtnEvent(getElement("#demo-area-09 .btn-center"),"click", function(){
+    document.querySelector("#demo-area-09 .btn-show").innerHTML = '連線';
+checkConnect(devID.value);///ok
+  });
+/**/
+
+function checkConnect(devId){
+document.querySelector("#demo-area-09 .btn-show").innerHTML = '與 DeviceID:' + devId + ' 嘗試連線';///
+///
+boardReady({board: 'Bit', device: devId, transport: 'mqtt'}, function (board) {
+//boardReady({board: 'Bit', device: 'bitd9356', transport: 'mqtt'}, function (board) {
+  board.samplingInterval = 250;
+  matrix = getMatrix(board, 4, 25);
+  buttonA = getPullupButton(board, 35);
+  buttonB = getPullupButton(board, 27);
+
+document.querySelector("#demo-area-09 .btn-show").innerHTML = '已連線';///
+
+  controllerBtnEvent(getElement("#demo-area-09 .btn-power"),"click", function(){
+    //document.querySelector("#demo-area-09 .btn-show").innerHTML = '○';
+    matrix.off();
+  });
+  controllerBtnEvent(getElement("#demo-area-09 .btn-up"),"click", function(){
+    //document.querySelector("#demo-area-09 .btn-show").innerHTML = '↑';
+    matrix.setColor("000000000100000002ff000003000000040000000500000006ff000007ff000008ff0000090000000aff00000bff00000cff00000dff00000eff00000f000000100000001100000012000000130000001400000015000000160000001700000018000000");
+  });
+  controllerBtnEvent(getElement("#demo-area-09 .btn-down"),"click", function(){
+    //document.querySelector("#demo-area-09 .btn-show").innerHTML = '↓';
+    matrix.setColor("000000000100000002000000030000000400000005000000060000000700000008000000090000000aff00000bff00000cff00000dff00000eff00000f00000010ff000011ff000012ff000013000000140000001500000016ff00001700000018000000");
+  });
+  controllerBtnEvent(getElement("#demo-area-09 .btn-left"),"click", function(){
+    //document.querySelector("#demo-area-09 .btn-show").innerHTML = '←';
+    matrix.setColor("000000000100000002ff000003000000040000000500000006ff000007ff000008000000090000000aff00000bff00000cff00000d0000000e0000000f00000010ff000011ff00001200000013000000140000001500000016ff00001700000018000000");
+  });
+  controllerBtnEvent(getElement("#demo-area-09 .btn-right"),"click", function(){
+    //document.querySelector("#demo-area-09 .btn-show").innerHTML = '→';
+    matrix.setColor("000000000100000002ff00000300000004000000050000000600000007ff000008ff0000090000000a0000000b0000000cff00000dff00000eff00000f0000001000000011ff000012ff000013000000140000001500000016ff00001700000018000000");
+  });
+//
+buttonA.on('pressed', function () {
+    document.querySelector("#demo-area-09 .btn-show").innerHTML = '←';
+    matrix.setColor("000000000100000002ff000003000000040000000500000006ff000007ff000008000000090000000aff00000bff00000cff00000d0000000e0000000f00000010ff000011ff00001200000013000000140000001500000016ff00001700000018000000");
+  });
+  buttonB.on('pressed', function () {
+    document.querySelector("#demo-area-09 .btn-show").innerHTML = '→';
+    matrix.setColor("000000000100000002ff00000300000004000000050000000600000007ff000008ff0000090000000a0000000b0000000cff00000dff00000eff00000f0000001000000011ff000012ff000013000000140000001500000016ff00001700000018000000");
+  });
+  function button_event_25240255() {
+    document.querySelector("#demo-area-09 .btn-show").innerHTML = '@@';
+    matrix.off();
+  }
+  function button_handle_25251165(btn, type) {
+    return function () {
+      btn.currentStatus = type;
+      buttonA.currentStatus === "pressed" && buttonB.currentStatus === "pressed" && button_event_25240255();
+    };
+  }
+  buttonA.on("pressed", button_handle_25251165(buttonA,"pressed"));
+  buttonA.on("released", button_handle_25251165(buttonA,"released"));
+  buttonA.on("longPress", button_handle_25251165(buttonA,"longPress"));
+  buttonB.on("pressed", button_handle_25251165(buttonB,"pressed"));
+  buttonB.on("released", button_handle_25251165(buttonB,"released"));
+  buttonB.on("longPress", button_handle_25251165(buttonB,"longPress"));
+//
+});
+///
+}
+
+/*
+boardReady({board: 'Bit', device: 'bitd9356', transport: 'mqtt'}, function (board) {
+  board.samplingInterval = 250;
+  matrix = getMatrix(board, 4, 25);
+  controllerBtnEvent(getElement("#demo-area-09 .btn-power"),"click", function(){
+    document.querySelector("#demo-area-09 .btn-show").innerHTML = '○';
+    matrix.off();
+  });
+  controllerBtnEvent(getElement("#demo-area-09 .btn-up"),"click", function(){
+    document.querySelector("#demo-area-09 .btn-show").innerHTML = '↑';
+    matrix.setColor("000000000100000002ff000003000000040000000500000006ff000007ff000008ff0000090000000aff00000bff00000cff00000dff00000eff00000f000000100000001100000012000000130000001400000015000000160000001700000018000000");
+  });
+  controllerBtnEvent(getElement("#demo-area-09 .btn-down"),"click", function(){
+    document.querySelector("#demo-area-09 .btn-show").innerHTML = '↓';
+    matrix.setColor("000000000100000002000000030000000400000005000000060000000700000008000000090000000aff00000bff00000cff00000dff00000eff00000f00000010ff000011ff000012ff000013000000140000001500000016ff00001700000018000000");
+  });
+  controllerBtnEvent(getElement("#demo-area-09 .btn-left"),"click", function(){
+    document.querySelector("#demo-area-09 .btn-show").innerHTML = '←';
+    matrix.setColor("000000000100000002ff000003000000040000000500000006ff000007ff000008000000090000000aff00000bff00000cff00000d0000000e0000000f00000010ff000011ff00001200000013000000140000001500000016ff00001700000018000000");
+  });
+  controllerBtnEvent(getElement("#demo-area-09 .btn-right"),"click", function(){
+    document.querySelector("#demo-area-09 .btn-show").innerHTML = '→';
+    matrix.setColor("000000000100000002ff00000300000004000000050000000600000007ff000008ff0000090000000a0000000b0000000cff00000dff00000eff00000f0000001000000011ff000012ff000013000000140000001500000016ff00001700000018000000");
+  });
+});
+*/
+
+}());
+</script>
+<!--
+<input type="text" name="dD" id="devID" onkeypress="if (event.keyCode == 13) {checkConnect(devID.value);}">
+ <button onclick="checkConnect('bitd9333');">連線</button>
+-->
+  </body>
+</html>
