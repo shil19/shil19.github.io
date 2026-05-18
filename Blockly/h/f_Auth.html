@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>驗證</title>
+</head>
+
+<script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-firestore.js"></script>
+
+<body>
+<table border=1 align=center width=80%>
+<tr>
+<td>
+<h2>郵件認證登入</h2>
+<p>
+<lable for="umail">電子郵件位址：</lable>
+<input id="umail" type="text">
+<button type="submit" id="mailSmtBtn">寄發認證碼</button>
+</p><p>
+<lable id="Login">郵件認證碼：</lable>
+<lable for="Certification"></lable>
+<input id="Certification" type="text">
+<button type="submit" id="loginSmtBtn">會員登入</button>
+</p>
+<p>
+<lable id="MSG"></lable>
+</p>
+</td>
+</tr>
+</table>
+</body>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCrVaPjLZAGAJVZMM8r5C0VoBq37A5WrnQ",
+  authDomain: "scjh2ly.firebaseapp.com",
+  databaseURL: "https://scjh2ly.firebaseio.com",
+  projectId: "scjh2ly",
+  storageBucket: "scjh2ly.appspot.com",
+  messagingSenderId: "644563261692",
+  appId: "1:644563261692:web:9923e57253701329489f79",
+  measurementId: "G-GH8DJH4212"
+};
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  //
+  var db = firebase.firestore();
+//
+var email = 's0810230@ms.ly.kh.edu.tw';
+var password = 'p0810230';
+var uid;
+
+/*直接自動登入*/
+//
+firebase.auth()
+  .signInWithEmailAndPassword(email, password)
+  .then(result => {
+    document.location.href = "./f_login.html"; 
+//    document.location.href = "./firestore_login.html"; 
+    document.getElementById("MSG").innerHTML = "已完成驗證！<br />"; //result.user.email+"已完成驗證！<br />";
+  })
+  .catch(error => {
+    document.getElementById("MSG").innerHTML = error.message+"<br />";
+  });
+
+</script>
+
+<script>
+//取得使用者資訊
+firebase.auth().onAuthStateChanged(function(user) {
+  if(user) {
+    // 使用者已登入，可以取得資料
+    var email = user.email;
+    //var uid = user.uid;
+    uid = user.uid;
+    //console.log(email, uid);
+    document.location.href = "./f_login.html"; 
+//    document.location.href = "./firestore_login.html"; 
+    document.getElementById("MSG").innerHTML = "已完成驗證 ^∆^<br />";//document.getElementById("MSG").innerHTML=email+"已驗證"+"<br />";//
+  } else {
+    // 使用者未登入
+    uid = null;
+    document.getElementById("MSG").innerHTML+="目前為未驗證狀態。。。"+"<br />";//.
+  }
+});
+</script>
+
+<script>
+/**/
+logoutSmtBtn.addEventListener("click",function(){
+//登出
+firebase.auth().signOut()
+  .then(function() {
+    // 登出後強制重整一次頁面
+    //window.location.reload();
+    document.getElementById("MSG").innerHTML+="已登出<br />";//+email+"<br />";//
+  }).catch(function(error) {
+    //console.log(error.message)
+    document.getElementById("MSG").innerHTML+=error.message+"<br />";//
+  });
+});
+/**/
+</script>
+
+</html>

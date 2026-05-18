@@ -1,0 +1,1149 @@
+﻿<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<base target="_top">
+<!---->
+<script src="../blockly/blockly_compressed.js"></script>
+<script src="../blockly/blocks_compressed.js"></script>
+<script src="../blockly/javascript_compressed.js"></script>
+<script src="../blockly/demos/interpreter/acorn_interpreter.js"></script>
+<script src="../blockly/msg/js/zh-hant.js"></script>
+<!---->
+<!--
+<script src="https://blockly-demo.appspot.com/static/blockly_compressed.js"></script>
+<script src="https://blockly-demo.appspot.com/static/blocks_compressed.js"></script>
+<script src="https://blockly-demo.appspot.com/static/javascript_compressed.js"></script>
+<script src="https://blockly-demo.appspot.com/static/demos/interpreter/acorn_interpreter.js"></script>
+<script src="https://blockly-demo.appspot.com/static/msg/js/en.js"></script>
+<script src="https://blockly-demo.appspot.com/static/msg/js/zh-hant.js"></script>
+-->
+
+<!--<script src="https://yljw8azhcdkz03jpvzyv7w.on.drv.tw/blockly/www/Blockly/demos/prettify.js"></script>-->
+<!--
+<link rel="stylesheet" href="http://163.22.72.196/html5/Blockly/Blockly/demos/code/style.css">-->
+<!--  <link rel="stylesheet" href="https://yljw8azhcdkz03jpvzyv7w.on.drv.tw/blockly/www/Blockly/demos/code/style.css">
+  <link href="www/Blockly/demos/prettify.css" rel="stylesheet">-->
+
+<!---->
+<script src="FileSaver.min.js"></script>
+<!--
+<script src="https://yljw8azhcdkz03jpvzyv7w.on.drv.tw/blockly/www/Blockly/demos/code/FileSaver.min.js"></script>
+-->
+
+<!--
+<script>
+Blockly.Blocks['start'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("start");
+    this.setNextStatement(true, null);
+    this.setColour(65);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+Blockly.JavaScript['start'] = function(block) {
+  // TODO: Assemble JavaScript into code variable.
+  var code = '\n';
+  return code;
+};
+</script>
+<script>
+Blockly.Blocks['ans'] = {
+  // Block n! variable setter.
+  init: function() {
+    this.setColour(330);
+    this.appendValueInput('VALUE')
+        .appendField('ans= ');//n_order
+    //this.setPreviousStatement(true, null);
+    //this.setNextStatement(true, null);
+
+    this.setTooltip(Blockly.Msg['VARIABLES_SET_TOOLTIP']);
+    this.setHelpUrl(Blockly.Msg['VARIABLES_SET_HELPURL']);
+    this.setDeletable(false);//
+  }
+};
+
+Blockly.JavaScript['ans'] = function(block) {
+  // Generate JavaScript for n! variable setter.
+  var argument0 = Blockly.JavaScript.valueToCode(block, 'VALUE',
+      Blockly.JavaScript.ORDER_ASSIGNMENT) || 'NaN';
+  //return argument0 + ';';
+  return 'ans = ' + argument0 + ';';//
+};
+</script>
+-->
+
+<!--
+<style>
+.load-button {
+  position: absolute;
+  bottom: 100px;
+  left: 20px;
+  border-radius: 100%;
+  color: white;
+  background-color: purple;
+  cursor: pointer;
+  font-size:56px
+}
+
+.load-button:hover {
+  box-shadow: 0 2px 2px rgba(0,0,0,.2),0 6px 10px rgba(0,0,0,.3);
+  transition: box-shadow .3s ease-in-out;
+}
+
+.saveblock-button {
+  position: absolute;
+  bottom: 24px;
+  left: 20px;
+  border-radius: 100%;
+  color: white;
+  background-color: green;
+  cursor: pointer;
+  font-size:56px
+}
+
+.saveblock-button:hover {
+  box-shadow: 0 2px 2px rgba(0,0,0,.2),0 6px 10px rgba(0,0,0,.3);
+  transition: box-shadow .3s ease-in-out;
+}
+
+.save-button {
+  position: absolute;
+  bottom: 24px;
+  right: 200px;
+  border-radius: 100%;
+  background-color: yellow;
+  cursor: pointer;
+  font-size:56px
+}
+
+.save-button:hover {
+  box-shadow: 0 2px 2px rgba(0,0,0,.2),0 6px 10px rgba(0,0,0,.3);
+  transition: box-shadow .3s ease-in-out;
+}
+</style>
+-->
+
+<!---->
+
+<p>Blockly 關卡測試</p>
+<p>Level = <label id ='lev'></label>
+</p>
+<p>
+<label id ='n'></label>!=???
+</p>
+<script>
+ var url = new URL(location.href);
+ var level = url.searchParams.get('level');
+ if(level==null || level<=0) level=1;
+ document.getElementById('lev').innerHTML= level;
+ document.getElementById('n').innerHTML= level;
+ //var getUrlString = location.href;
+ //var url = new URL(getUrlString);
+ //document.getElementById('lev').innerHTML= url.searchParams.get('level');
+</script>
+<script>
+Blockly.Blocks['ans'] = {
+  // Block n! variable setter.
+  init: function() {
+    this.setColour(330);
+    this.appendValueInput('VALUE')
+        .appendField(level + ' ! = ');
+    //    .appendField('ans= ');//n_order
+    //this.setPreviousStatement(true, null);
+    //this.setNextStatement(true, null);
+
+    this.setTooltip(Blockly.Msg['VARIABLES_SET_TOOLTIP']);
+    this.setHelpUrl(Blockly.Msg['VARIABLES_SET_HELPURL']);
+    this.setDeletable(false);//
+  }
+};
+
+Blockly.JavaScript['ans'] = function(block) {
+  // Generate JavaScript for n! variable setter.
+  var argument0 = Blockly.JavaScript.valueToCode(block, 'VALUE',
+      Blockly.JavaScript.ORDER_ASSIGNMENT) || 'NaN';
+  //return argument0 + ';';
+  return 'ans = ' + argument0 + ';';//
+};
+</script>
+
+<!--
+  <div class="app-container">
+    <div id="blocklyDiv" class="main blockly-panel"></div>
+    <div class="main output-panel">
+    <p><button onclick="stepCode()" id="stepButton">逐步執行 JavaScript</button></p>
+    <textarea id="output" disabled="disabled"
+        style="display: inline-block; height: 45%; width: 100%;">
+    </textarea>
+    <textarea id ="codetextarea" disabled="disabled" style="display: inline-block; height: 45%; width: 100%;"></textarea>
+    </div>
+  </div>
+-->
+  <div style="width: 100%" class="app-container">
+    <div id="blocklyDiv" style="display: inline-block; height: 480px; width: 58%" class="main blockly-panel"></div>
+    <div style="display: inline-block; height: 480px; width: 38%" class="main output-panel">
+    <p><button onclick="stepCode()" id="stepButton">逐步執行</button>   <span id="NextLevel"></span></p>
+    <textarea id="output" disabled="disabled"
+        style="display: inline-block; height: 45%; width: 100%">
+    </textarea>
+    <textarea id ="codetextarea" disabled="disabled" style="display: inline-block; height: 45%; width: 100%"></textarea>
+    </div>
+<!---->
+  <div id="loadXmlButton" class="load-button material-icons"><!-- ▲ -->file_upload</div>
+  <input type="file" id="load" style="display: none;"/>
+  <div id="saveBlockButton" class="saveblock-button material-icons"><!-- ▼ -->file_download</div><!---->
+  </div>
+
+<!--
+  <div style="width: 100%">
+    <div id="blocklyDiv"
+        style="display: inline-block; height: 480px; width: 58%"></div>
+    <textarea id="output" disabled="disabled"
+        style="display: inline-block; height: 480px; width: 38%;">
+    </textarea>
+  </div>
+-->
+
+<!--
+<div id="blocklyDiv" style="height: 480px; width: 600px;">
+</div>
+-->
+
+  <xml id="toolbox" style="display: none">
+    <category name="{catLogic}" colour="210">
+      <block type="controls_if"></block>
+      <block type="logic_compare"></block>
+      <block type="logic_operation"></block>
+      <block type="logic_negate"></block>
+      <block type="logic_boolean"></block>
+      <block type="logic_null"></block>
+      <block type="logic_ternary"></block>
+    </category>
+    <category name="{catLoops}" colour="120">
+      <block type="controls_repeat_ext">
+        <value name="TIMES">
+          <shadow type="math_number">
+            <field name="NUM">10</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="controls_whileUntil"></block>
+      <block type="controls_for">
+        <value name="FROM">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="TO">
+          <shadow type="math_number">
+            <field name="NUM">10</field>
+          </shadow>
+        </value>
+        <value name="BY">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="controls_forEach"></block>
+      <block type="controls_flow_statements"></block>
+    </category>
+    <category name="{catMath}" colour="230">
+      <block type="math_number"></block>
+      <block type="math_arithmetic">
+        <value name="A">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="B">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_single">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">9</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_trig">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">45</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_constant"></block>
+      <block type="math_number_property">
+        <value name="NUMBER_TO_CHECK">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_round">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">3.1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_on_list"></block>
+      <block type="math_modulo">
+        <value name="DIVIDEND">
+          <shadow type="math_number">
+            <field name="NUM">64</field>
+          </shadow>
+        </value>
+        <value name="DIVISOR">
+          <shadow type="math_number">
+            <field name="NUM">10</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_constrain">
+        <value name="VALUE">
+          <shadow type="math_number">
+            <field name="NUM">50</field>
+          </shadow>
+        </value>
+        <value name="LOW">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="HIGH">
+          <shadow type="math_number">
+            <field name="NUM">100</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_random_int">
+        <value name="FROM">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="TO">
+          <shadow type="math_number">
+            <field name="NUM">100</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_random_float"></block>
+    </category>
+    <category name="{catText}" colour="160">
+      <block type="text"></block>
+      <block type="text_join"></block>
+      <block type="text_print">
+        <value name="TEXT">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_prompt_ext">
+        <value name="TEXT">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_append">
+        <value name="TEXT">
+          <shadow type="text"></shadow>
+        </value>
+      </block>
+      <block type="text_length">
+        <value name="VALUE">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_isEmpty">
+        <value name="VALUE">
+          <shadow type="text">
+            <field name="TEXT"></field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_indexOf">
+        <value name="VALUE">
+          <block type="variables_get">
+            <field name="VAR">{textVariable}</field>
+          </block>
+        </value>
+        <value name="FIND">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_charAt">
+        <value name="VALUE">
+          <block type="variables_get">
+            <field name="VAR">{textVariable}</field>
+          </block>
+        </value>
+      </block>
+      <block type="text_getSubstring">
+        <value name="STRING">
+          <block type="variables_get">
+            <field name="VAR">{textVariable}</field>
+          </block>
+        </value>
+      </block>
+      <block type="text_changeCase">
+        <value name="TEXT">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_trim">
+        <value name="TEXT">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>   
+    </category>
+    <category name="{catLists}" colour="260">
+      <block type="lists_create_with">
+        <mutation items="0"></mutation>
+      </block>
+      <block type="lists_create_with"></block>
+      <block type="lists_repeat">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">5</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="lists_length"></block>
+      <block type="lists_isEmpty"></block>
+      <block type="lists_indexOf">
+        <value name="VALUE">
+          <block type="variables_get">
+            <field name="VAR">{listVariable}</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_getIndex">
+        <value name="VALUE">
+          <block type="variables_get">
+            <field name="VAR">{listVariable}</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_setIndex">
+        <value name="LIST">
+          <block type="variables_get">
+            <field name="VAR">{listVariable}</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_getSublist">
+        <value name="LIST">
+          <block type="variables_get">
+            <field name="VAR">{listVariable}</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_split">
+        <value name="DELIM">
+          <shadow type="text">
+            <field name="TEXT">,</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="lists_sort"></block>
+    </category>
+    <category name="{catColour}" colour="20">
+      <block type="colour_picker"></block>
+      <block type="colour_random"></block>
+      <block type="colour_rgb">
+        <value name="RED">
+          <shadow type="math_number">
+            <field name="NUM">100</field>
+          </shadow>
+        </value>
+        <value name="GREEN">
+          <shadow type="math_number">
+            <field name="NUM">50</field>
+          </shadow>
+        </value>
+        <value name="BLUE">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="colour_blend">
+        <value name="COLOUR1">
+          <shadow type="colour_picker">
+            <field name="COLOUR">#ff0000</field>
+          </shadow>
+        </value>
+        <value name="COLOUR2">
+          <shadow type="colour_picker">
+            <field name="COLOUR">#3333ff</field>
+          </shadow>
+        </value>
+        <value name="RATIO">
+          <shadow type="math_number">
+            <field name="NUM">0.5</field>
+          </shadow>
+        </value>
+      </block>
+    </category>
+    <sep></sep>
+    <category name="{catVariables}" colour="330" custom="VARIABLE"></category>
+    <category name="{catFunctions}" colour="290" custom="PROCEDURE"></category>
+  </xml>
+
+<!--
+<xml id="toolbox" style="display: none;">
+ <category name="Control" colour="120"><!- categorystyle="control_category">->
+  <block type="controls_repeat_ext"></block>
+  <block type="controls_whileUntil"></block>
+  <block type="controls_for">
+ </category>
+ <category name="Logic" categorystyle="logic_category">
+  <block type="controls_if"></block>
+  <block type="logic_compare"></block>
+  <block type="logic_operation"></block>
+  <block type="logic_negate"></block>
+  <block type="logic_boolean"></block>
+ </category>
+ <category name="Math" colour="230">
+  <block type="math_number"></block>
+  <block type="math_arithmetic"></block>
+  <block type="math_single"></block>
+ </category>
+ <category name="Custom" colour="20">
+  <block type="text"></block>
+  <block type="text_length"></block>
+  <block type="text_print"></block>
+ </category>
+ <category name="Variables" custom="VARIABLE"> 
+ </category>
+ <category name="Functions" custom="PROCEDURE"></category>
+</xml>
+-->
+
+<!--
+<textarea id ="codetextarea" cols="40" rows="10"></textarea>
+
+<textarea id ="output" cols="40" rows="10"></textarea>
+-->
+
+<xml xmlns="https://developers.google.com/blockly/xml" id="startBlocks" style="display: none">
+<block type="ans" deletable="false" x="20" y="50">
+        <value name="VALUE">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+</block>
+<!----><!--
+<block type="start" deletable="false" x="20" y="20">
+  <next>--><!----><!--
+  <variables>
+    <variable id="[CC{fn2{vKdw~YEcKw:}">n</variable>
+    <variable id="S?`!6[goI9IhjN..;,~#">ans</variable>
+  </variables>-->
+<!--
+  <block type="text_print" id="G({xi^c?Wf4#|Q@5g(W?" x="13" y="112">
+    <value name="TEXT">
+      <shadow type="text" id="KG+tSt0$9GbC^,)@e-HE">
+        <field name="TEXT">abc</field>
+      </shadow>
+
+      <block type="variables_set">
+        <field name="VAR">ans</field>
+        <value name="VALUE">-->
+<!----><!--
+      <block type="procedures_callreturn" id="WW,`NH9Ox:ya|}`11=at">
+        <mutation name="n階">
+          <arg name="n"/>
+        </mutation>
+        <value name="ARG0">
+          <block type="math_number" id="sPWRG?[iCJI-jVk^Rn:@">
+            <field name="NUM">
+            <span id="rangeN"></span>
+            </field>
+          </block>
+        </value>
+      </block>-->
+<!----><!--
+    </value>
+  </block>-->
+<!---->
+<!----><!--
+  </next>
+</block>--><!----><!--
+  <block type="procedures_defreturn" id="USar,Ns8GH$~:G`6q1zu" x="12" y="238">
+    <mutation>
+      <arg name="n" varid="[CC{fn2{vKdw~YEcKw:}"/>
+    </mutation>
+    <field name="NAME">n階</field>
+    <comment pinned="false" h="80" w="160">描述此函式...</comment>
+    <statement name="STACK">
+      <block type="variables_set" id="NSb~;0MFW;lNB#6$p[na">
+        <field name="VAR" id="S?`!6[goI9IhjN..;,~#">ans</field>
+        <value name="VALUE">
+          <block type="math_number" id="Yk1yU@B!9ClPY(.cg+C4">
+            <field name="NUM">1</field>
+          </block>
+        </value>
+        <next>
+          <block type="controls_if" id="l*7yj5Y:D@^.VeGVn:+:">
+            <value name="IF0">
+              <block type="logic_compare" id="%SID6*#=aQCa;Cijeb1O">
+                <field name="OP">GT</field>
+                <value name="A">
+                  <block type="variables_get" id=".+LBy#:U$uJufiX%#IFF">
+                    <field name="VAR" id="[CC{fn2{vKdw~YEcKw:}">n</field>
+                  </block>
+                </value>
+                <value name="B">
+                  <block type="math_number" id="HAr{LNq15e03vJ?/wDb^">
+                    <field name="NUM">1</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <statement name="DO0">
+              <block type="variables_set" id="`,oktty-=!kX-!og?,Iz">
+                <field name="VAR" id="S?`!6[goI9IhjN..;,~#">ans</field>
+                <value name="VALUE">
+                  <block type="math_arithmetic" id="wS/pFRF0dd%,MO=lN+I%">
+                    <field name="OP">MULTIPLY</field>
+                    <value name="A">
+                      <shadow type="math_number" id="PjP.Ps)$9uZzpwr6%4;B">
+                        <field name="NUM">1</field>
+                      </shadow>
+                      <block type="procedures_callreturn" id="B]]W1|xwd*E!^mf7q4Uy">
+                        <mutation name="n階">
+                          <arg name="n"/>
+                        </mutation>
+                        <value name="ARG0">
+                          <block type="math_arithmetic" id="WF{$ZA/af^vED(YM(e!4">
+                            <field name="OP">MINUS</field>
+                            <value name="A">
+                              <shadow type="math_number" id="lXSu29Qyj8Az5r~n7p*t">
+                                <field name="NUM">1</field>
+                              </shadow>
+                              <block type="variables_get" id="w+11TV-w`8@BU_Ao%wM+">
+                                <field name="VAR" id="[CC{fn2{vKdw~YEcKw:}">n</field>
+                              </block>
+                            </value>
+                            <value name="B">
+                              <shadow type="math_number" id="49rMux{iRyi046gXslfF">
+                                <field name="NUM">1</field>
+                              </shadow>
+                            </value>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                    <value name="B">
+                      <shadow type="math_number" id="mxgv?Qz3[1M{,T?zfj_.">
+                        <field name="NUM">1</field>
+                      </shadow>
+                      <block type="variables_get" id="i44GC^N*$dPh.9?VsRF`">
+                        <field name="VAR" id="[CC{fn2{vKdw~YEcKw:}">n</field>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+              </block>
+            </statement>
+            <next>
+              <block type="text_print" id="KytdwL:IDQCXFl/h6Pz]">
+                <value name="TEXT">
+                  <shadow type="text" id="QwCGC#U2v`SEOuz2sKz;">
+                    <field name="TEXT">abc</field>
+                  </shadow>
+                  <block type="variables_get" id="c=m,+u4[7z]LPo}~!xJ1">
+                    <field name="VAR" id="S?`!6[goI9IhjN..;,~#">ans</field>
+                  </block>
+                </value>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="RETURN">
+      <block type="variables_get" id="IL*~)nd,bk[w6TOk$vm_">
+        <field name="VAR" id="S?`!6[goI9IhjN..;,~#">ans</field>
+      </block>
+    </value>
+  </block>-->
+</xml>
+<script>
+document.getElementById('rangeN').innerHTML = level ;
+</script>
+<!--
+  <xml xmlns="https://developers.google.com/blockly/xml" id="startBlocks" style="display: none">-->
+<!--
+<block type="start" deletable="false" x="20" y="20">
+  <next>--><!--
+    <block type="variables_set" id="set_n_initial" inline="true" x="20" y="20">
+      <field name="VAR">n</field>
+      <value name="VALUE">
+        <block type="math_number">
+          <field name="NUM">1</field>
+        </block>
+      </value>
+      <next>
+        <block type="controls_repeat_ext" id="repeat" inline="true">
+          <value name="TIMES">
+            <block type="math_number">
+              <field name="NUM">4</field>
+            </block>
+          </value>
+          <statement name="DO">
+            <block type="variables_set" id="set_n_update" inline="true">
+              <field name="VAR">n</field>
+              <value name="VALUE">
+                <block type="math_arithmetic" inline="true">
+                  <field name="OP">MULTIPLY</field>
+                  <value name="A">
+                    <block type="variables_get">
+                      <field name="VAR">n</field>
+                    </block>
+                  </value>
+                  <value name="B">
+                    <block type="math_number">
+                      <field name="NUM">2</field>
+                    </block>
+                  </value>
+                </block>
+              </value>
+              <next>
+                <block type="text_print" id="print">
+                  <value name="TEXT">
+                    <block type="variables_get">
+                      <field name="VAR">n</field>
+                    </block>
+                  </value>
+                </block>
+              </next>
+            </block>
+          </statement>
+        </block>
+      </next>
+    </block>-->
+<!--
+  </next>
+</block>--><!--
+  </xml>-->
+
+<!--
+  <xml xmlns="https://developers.google.com/blockly/xml" id="startBlocks" style="display: none">
+    <block type="controls_if" inline="false" x="20" y="20">
+      <mutation else="1"></mutation>
+      <value name="IF0">
+        <block type="logic_compare" inline="true">
+          <field name="OP">EQ</field>
+          <value name="A">
+            <block type="math_arithmetic" inline="true">
+              <field name="OP">MULTIPLY</field>
+              <value name="A">
+                <block type="math_number">
+                  <field name="NUM">6</field>
+                </block>
+              </value>
+              <value name="B">
+                <block type="math_number">
+                  <field name="NUM">7</field>
+                </block>
+              </value>
+            </block>
+          </value>
+          <value name="B">
+            <block type="math_number">
+              <field name="NUM">42</field>
+            </block>
+          </value>
+        </block>
+      </value>
+      <statement name="DO0">
+        <block type="text_print" inline="false">
+          <value name="TEXT">
+            <block type="text">
+              <field name="TEXT">Don't panic</field>
+            </block>
+          </value>
+        </block>
+      </statement>
+      <statement name="ELSE">
+        <block type="text_print" inline="false">
+          <value name="TEXT">
+            <block type="text">
+              <field name="TEXT">Panic</field>
+            </block>
+          </value>
+        </block>
+      </statement>
+    </block>
+  </xml>
+-->
+
+
+<script>
+///
+/*
+isRtl = function() {
+  return Code.LANGUAGE_RTL.indexOf(Code.LANG) != -1;
+};
+
+  var rtl = isRtl();
+
+  // Interpolate translated messages into toolbox.
+  var toolboxText = document.getElementById('toolbox').outerHTML;
+  toolboxText = toolboxText.replace(/{(\w+)}/g,
+      function(m, p1) {return MSG[p1]});
+  var toolboxXml = Blockly.Xml.textToDom(toolboxText);
+  
+  var workspace = Blockly.inject('blocklyDiv',
+      {rtl: rtl,toolbox: toolboxXml}
+      );
+///
+*/
+  var workspace = Blockly.inject('blocklyDiv',
+      {toolbox: document.getElementById('toolbox')});
+
+    
+Blockly.Xml.domToWorkspace(document.getElementById('startBlocks'),workspace);
+//
+ workspace.addChangeListener(Blockly.Events.disableOrphans);
+//
+
+//document.head.parentElement.setAttribute('lang', 'zh-hant');///
+//document.getElementById('NextLevel').innerHTML = document.head.parentElement;///
+
+function n_E9_9A_8E(n) {
+  if (n > 1) {
+    nAns = n * n_E9_9A_8E(n - 1);
+    return nAns ;
+  }
+  else return 1 ;
+}
+var nN = n_E9_9A_8E(level) ;
+
+//
+    function showCode() {
+      // Generate JavaScript code and display it.
+      Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+      var code = Blockly.JavaScript.workspaceToCode(workspace);
+      alert(code);
+    }
+
+    function runCode() {
+      // Generate JavaScript code and run it.
+      window.LoopTrap = 1000;
+      Blockly.JavaScript.INFINITE_LOOP_TRAP =
+          'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
+      var code = Blockly.JavaScript.workspaceToCode(workspace);
+      Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+      try {
+        //eval(code);
+//
+        answer = eval(code);
+        outputArea.value = '程式執行...\n';
+        checkPass(answer);
+/*
+        outputArea.value = "answer = " + answer ;//ans ;
+        //outputArea.value += "\n" + "n階(" + level + ")=" + nN ;
+        outputArea.value += "\n" + level + "! = " + nN ;
+        if(answer == nN)
+          outputArea.value += "\n" + "  correct ";
+        else
+          outputArea.value += "\n" + "  error ";
+*/
+//
+      } catch (e) { 
+//document.getElementById('runtextarea').value = e ;
+        alert(e);
+      }
+    }
+
+//
+function myUpdateFunction(event) {
+  var code = Blockly.JavaScript.workspaceToCode(workspace);
+  document.getElementById('codetextarea').value = code;
+
+}
+workspace.addChangeListener(myUpdateFunction);
+//
+
+    var outputArea = document.getElementById('output');
+    var stepButton = document.getElementById('stepButton');
+
+//
+function checkPass(answer)
+{
+        outputArea.value += '\n你的 Ans = '+ answer;
+        //outputArea.value += "\n" + "n階(" + level + ")=" + nN ;
+        outputArea.value += "\n" + level + "! = " + nN ;
+        if(answer == nN)
+        {
+          outputArea.value += "\n" + "故結果  correct ";
+          document.getElementById('NextLevel').innerHTML = "<button onclick=window.location.assign('./level_test.html?level=" + (parseInt(level)+parseInt(1)) + "')>下一個 關卡</button>";//Next Level
+//          document.getElementById('NextLevel').innerHTML = "  <a href = './level_test.html?level=" + (parseInt(level)+parseInt(1)) + "'>Next Level</a><button onclick=window.location.assign('./level_test.html?level=" + (parseInt(level)+parseInt(1)) + "')>Next Level</button>";
+          //outputArea.value += "\n" + "  <a href = './level_test.html?level=" + (parseInt(level)+parseInt(1)) + "'>Next Level</a>";
+          var again = confirm('你的 ' + level + '! 計算結果為 ' + answer + '\n結果正確!!!\n繼續嗎？');
+          if ( again ) {window.location.assign('./level_test.html?level=' + (parseInt(level)+parseInt(1)));}
+          //if ( again ) {window.location.reload();}
+        }
+        else
+        {
+          outputArea.value += "\n" + "故結果  error ";
+          document.getElementById('NextLevel').innerHTML = "";
+          alert('你的 ' + level + '! 計算結果為 ' + answer + '\n結果不正確!!!\n再接再厲!!!');
+        }
+}
+function isPass()
+{
+outputArea.value += '\nn階='+nN;//'\n Ans';//No Ok+ans;//
+//var nN = n_E9_9A_8E(level) ;
+//alert('n階='+nN);
+/*
+   if(x == g_x && y == g_y )
+   {
+      passed = true ;
+   }
+   else
+   {
+      passed = false;
+   }
+
+   if (passed)//
+   {
+      outputArea.value += '\n 成功';
+      var again = confirm('成功!!!\n再玩嗎？');
+      if ( again ) {window.location.reload();}
+   }
+   else
+   {
+      outputArea.value += '\n 再接再厲';
+      alert("再接再厲!!!");
+   }
+*/
+}
+
+/**/
+
+function stepCode() {
+  Blockly.JavaScript.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
+//  Blockly.JavaScript.STATEMENT_PREFIX = '';
+  //highlightBlock(%1);
+  //workspace.highlightBlock(%1);
+  //highlightPause = true;
+  Blockly.JavaScript.addReservedWords('highlightBlock');
+  stepButton.disabled = 'disabled'; // true ;
+  outputArea.value = '程式執行...\n';
+  var code = Blockly.JavaScript.workspaceToCode(workspace);
+//
+code += "if(ans == NaN) ans = 0 ;checkAns(ans);";
+//code += "checkAns(ans);";
+//
+  var myInterpreter = new Interpreter(code, initApi);
+  function nextStep() {
+    if (myInterpreter.step()) {
+      window.setTimeout(nextStep, 100);
+    }
+    else
+    {
+//isPass();//setTimeout(isPass(),200);//
+      outputArea.value += '\n\n程式執行結束\n';
+      //setTimeout(function() {
+      //        stepButton.disabled = '';
+      //      }, 2000);
+      stepButton.disabled = ''; // false ;
+    }
+  }
+  nextStep();
+//  alert(instructionStructure);
+}
+
+
+    function initApi(interpreter, scope) {
+      // Add an API function for the alert() block, generated for "text_print" blocks.
+      interpreter.setProperty(scope, 'alert',
+          interpreter.createNativeFunction(function(text) {
+        text = text ? text.toString() : '';
+        outputArea.value += '\n' + text;
+      }));
+
+      // Add an API function for the prompt() block.
+      var wrapper = function(text) {
+        text = text ? text.toString() : '';
+        return interpreter.createPrimitive(prompt(text));
+      };
+      interpreter.setProperty(scope, 'prompt',
+          interpreter.createNativeFunction(wrapper));
+
+//checkAns ???
+      interpreter.setProperty(scope, 'checkAns',
+          interpreter.createNativeFunction(function(text) {
+        text = text ? text.toString() : '';
+        checkPass(text);
+      }));
+
+      // Add an API function for highlighting blocks.
+      var wrapper = function(id) {
+        id = id ? id.toString() : '';
+        return interpreter.createPrimitive(highlightBlock(id));
+      };
+      interpreter.setProperty(scope, 'highlightBlock',
+          interpreter.createNativeFunction(wrapper));
+    }
+//
+/**/
+
+    var highlightPause = false;
+    //var latestCode = '';
+
+    function highlightBlock(id) {
+      workspace.highlightBlock(id);
+      highlightPause = true;
+    }
+
+//
+</script>
+
+<script>
+  // Init load event.
+  var loadInput = document.getElementById('load');
+  loadInput.addEventListener('change', load, false);
+  document.getElementById('loadXmlButton').onclick = function() {
+    loadInput.click();
+  };
+
+//document.getElementById('saveBlockButton').addEventListener('click', saveBlocksToXml);
+document.getElementById('saveBlockButton').onclick = function() {
+    saveBlocksToXml();
+  };
+
+// Save blocks
+//Code.
+saveBlocksToXml = function() {
+  var filename = prompt("請輸入積木程式的檔案名稱", "Blockly");
+//  var xml = Blockly.Xml.workspaceToDom(Code.workspace);
+  var xml = Blockly.Xml.workspaceToDom(workspace);
+
+  if( filename == null ) return;
+  var fileExt = ".xml";
+
+  var xml_text = Blockly.Xml.domToPrettyText(xml);
+  //save the DOM
+  var blob = new Blob([xml_text], {type: "text/plain;charset=utf-8"});
+  if( blob.size != 0 )
+    saveAs(blob, filename + fileExt);
+};
+
+/**
+ * Load blocks from local file.
+ */
+//Code.
+//load = function(event) {
+function load(event) {
+  var files = event.target.files;
+  // Only allow uploading one file.
+  if (files.length != 1) {
+    return;
+  }
+
+  // FileReader
+  var reader = new FileReader();
+  reader.onloadend = function(event) {
+    var target = event.target;
+    // 2 == FileReader.DONE
+    if (target.readyState == 2) {
+      try {
+        var xml = Blockly.Xml.textToDom(target.result);
+//        var xml = Xml.textToDom(target.result);
+//alert(xml);///
+      } catch (e) {
+        alert('剖析XML錯誤:\n' + e);
+        return;
+      }
+//      var count = Blockly.mainWorkspace.getAllBlocks().length;
+      var count = workspace.getAllBlocks().length;
+//      if (count && confirm('確認取代存在的積木?\n按"取消"鈕是合併積木.')) {
+      if (count && confirm('確認取代存在的積木?\n(提醒：存在積木含不可刪積木，若刪除該積木會導致程式無法執行)\n按"取消"鈕是合併積木.')) {
+//        Blockly.mainWorkspace.clear();
+        workspace.clear();
+      }
+//      Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
+      Blockly.Xml.domToWorkspace(workspace, xml);
+//outputArea.value += '\n Testing ';//
+//      Blockly.Xml.domToWorkspace(xml, workspace);///
+    }
+    // Reset value of input after loading because Chrome will not fire
+    // a 'change' event if the same file is loaded again.
+    document.getElementById('load').value = '';
+  };
+  reader.readAsText(files[0]);
+}
+/**
+ * Load blocks saved on App Engine Storage or in session/local storage.
+ * @param {string} defaultXml Text representation of default blocks.
+ */
+/*目前還沒用到
+//Code.
+loadBlocks = function(defaultXml) {
+  try {
+    var loadOnce = window.sessionStorage.loadOnceBlocks;
+  } catch(e) {
+    // Firefox sometimes throws a SecurityError when accessing sessionStorage.
+    // Restarting Firefox fixes this, so it looks like a bug.
+    var loadOnce = null;
+  }
+  if (loadOnce) {
+    // Language switching stores the blocks during the reload.
+    delete window.sessionStorage.loadOnceBlocks;
+    var xml = Blockly.Xml.textToDom(loadOnce);
+    Blockly.Xml.domToWorkspace(xml, workspace);
+//    
+Blockly.Xml.domToWorkspace(document.getElementById('startBlocks'),workspace);//
+  } else if ('BlocklyStorage' in window) {
+    // Restore saved blocks in a separate thread so that subsequent
+    // initialization is not affected from a failed load.
+    window.setTimeout(BlocklyStorage.restoreBlocks, 0);
+  }
+};
+*/
+
+</script>
+
+
+<p>
+<button onclick="runCode()">執行</button>
+<!--<button onclick="showCode()">顯示</button>-->
+<!--
+<button onclick="stepCode()" id="stepButton">逐步執行 JavaScript</button>
+-->
+</p>
+<!--
+<script>
+document.getElementById('NextLevel').innerHTML = "  <a href = './level_test.html?level=" + (parseInt(level)+parseInt(1)) + "'>Next Level</a>";
+//document.write("<a href = './level_test.html?level=" + (parseInt(level)+parseInt(1)) + "'>Next Level</a>");
+</script>
+-->
+<!--
+<p>
+<a href = "https://yljw8azhcdkz03jpvzyv7w-on.drv.tw/blockly/www/g_ttt.html"> 自製Block測試</a>
+ 
+<a href = "https://ly8.page.link/blockly/"> 範例Blockly</a>
+</p>
+-->

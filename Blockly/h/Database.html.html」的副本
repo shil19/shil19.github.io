@@ -1,0 +1,500 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>郵件認證登入成功</title>
+</head>
+
+<script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-firestore.js"></script>
+
+<script src="https://smtpjs.com/v3/smtp.js">
+</script>
+
+<script>
+/*暫停送信
+Email.send({
+    SecureToken : "7d022e4d-5fb4-441d-bd28-3c2a77918552",
+    To : 's0810130@ms.ly.kh.edu.tw',
+    From : "s0810230@ms.ly.kh.edu.tw",
+    Subject : "登入認證碼",
+    Body : "登入認證碼為12356",
+}).then(
+  message => alert(message)
+);
+*/
+
+// Reference: https://stackoverflow.com/questions/10730362/get-cookie-by-name
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+}
+</script>
+
+<body>
+<table border=1 align=center width=80%>
+<tr>
+<td>
+<h2>郵件認證登入成功</h2>
+<!--
+<lable for="accountL"></lable>
+<input id="accountL" type="text" value="account@ms.ly.kh.edu.tw">
+<lable for="pwdL"></lable>
+<input id="pwdL" type="password" value="pwd">
+<button type="submit" id="loginSmtBtn">Login</button>
+<button type="submit" id="logoutSmtBtn">Logout</button>
+-->
+<!--
+<p>
+<lable for="umail">電子郵件位址：</lable>
+<input id="umail" type="text">
+<button type="submit" id="mailSmtBtn">寄發認證碼</button>
+</p><p>
+<lable id="Login">郵件認證碼：</lable>
+<lable for="Certification"></lable>
+<input id="Certification" type="text">
+<button type="submit" id="loginSmtBtn">會員登入</button>
+</p>
+-->
+<p>
+<lable id="MSG"></lable>
+</p>
+<!--
+<p>
+<lable id="Content"></lable>
+</p>
+-->
+</td>
+</tr>
+</table>
+
+<table border=1 align=center width=80%>
+<tr>
+<td>
+<p>
+ <span style="font-family:DFKai-sb; font-size:50px; " >請輸入欲查詢的</span>
+ 班級 :  <input type="text" name="tQ" id="textQ" onkeypress="if (event.keyCode == 13) {storedata(textQ.value);}">  <br /><br />
+ <button onclick="storedata(textQ.value)">查詢 GO</button>
+</p>
+ 
+ <table border="1">
+　 <tr>
+　  <td align="center" style="font-weight:bold; font-size:20px;" >ID</td>
+  <td align="center" style="font-weight:bold; font-size:20px;">班級</td>
+  <td align="center" style="font-weight:bold; font-size:20px;">班級別名</td>
+　 </tr>
+ <tr>
+　  <td id="table1">＿</td>
+  <td id="table2">＿</td>
+  <td id="table3">＿</td>
+　 </tr>
+ </table>
+<p>
+<lable id="MSG2"></lable>
+</p>
+<p>
+<lable id="id"></lable>
+<input id="ClassN" type="text">
+<input id="AliasN" type="text">
+<button type="submit" id="upSmtBtn">更新</button>
+</p>
+</td>
+</tr>
+<tr>
+<td align=center>
+。。。僅測試系統。。。
+</td>
+</tr>
+</table>
+</body>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCrVaPjLZAGAJVZMM8r5C0VoBq37A5WrnQ",
+  authDomain: "scjh2ly.firebaseapp.com",
+  databaseURL: "https://scjh2ly.firebaseio.com",
+  projectId: "scjh2ly",
+  storageBucket: "scjh2ly.appspot.com",
+  messagingSenderId: "644563261692",
+  appId: "1:644563261692:web:9923e57253701329489f79",
+  measurementId: "G-GH8DJH4212"
+};
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  //
+  var db = firebase.firestore();
+</script>
+
+<script>
+/*
+var email = 'account@ms.ly.kh.edu.tw';
+var password = 'pwd';
+//var umail = document.getElementById("umail");
+//var Certification = document.getElementById("Certification");
+var loginSmtBtn = document.getElementById("loginSmtBtn");
+//var logoutSmtBtn = document.getElementById("logoutSmtBtn");//
+var mailSmtBtn = document.getElementById("mailSmtBtn");//
+*/
+var uid;
+var member = getCookie("member");
+/*
+let dt1 = new Date(2022, 10, 22, 1, 0, 0);//
+let dt2 = new Date(2022, 10, 22, 2, 0, 19);//
+*/
+///var URLs = getCookie("URLs"); //XXX///request.form("memid");//.form("id");///
+///var UrlString = document.location.href;///
+///var url = new URL(UrlString);
+//var url = new URL(location.href);
+//var member = url.searchParams.get('member');
+///document.getElementById("Content").innerHTML = "member:"+member+"<br />"+"URL:"+URLs+"<br />";//
+/*
+//
+var id=document.getElementById("id");
+var ClassN=document.getElementById("ClassN");
+var AliasN=document.getElementById("AliasN");
+*/
+var upSmtBtn = document.getElementById("upSmtBtn");//
+/*直接自動登入*/
+//登入
+//var email = accountL.value;
+//var password = pwdL.value;
+/*
+//
+firebase.auth()
+  .signInWithEmailAndPassword(email, password)
+  .then(result => {
+    document.getElementById("MSG").innerHTML=result.user.email+"已自動登入<br />";//
+  })
+  .catch(error => {
+    document.getElementById("MSG").innerHTML=error.message+"<br />";//
+  });
+*/
+/*登入按鈕*/
+//loginSmtBtn.addEventListener("click",function(){
+/*
+//
+//登入
+//var email = accountL.value;
+//var password = pwdL.value;
+
+//
+firebase.auth()
+  .signInWithEmailAndPassword(email, password)
+  .then(result => {
+    document.getElementById("MSG").innerHTML=result.user.email+"<br />";//
+  })
+  .catch(error => {
+    document.getElementById("MSG").innerHTML=error.message+"<br />";//
+  });
+*/
+/*
+umail = document.getElementById("umail").value;
+Certification = document.getElementById("Certification").value;
+dt2 = new Date();//(2022, 10, 23, 13, 0, 0);//
+//document.getElementById("MSG").innerHTML = uid + "," + umail + "," + Certification;
+
+if(uid){
+var ref = db.collection('Users').doc(umail);
+//document.getElementById("MSG").innerHTML=ref.id;//+ref.data().Certification +"<br />";//
+ref.onSnapshot(doc => {
+document.getElementById("MSG").innerHTML=doc.id ;//+ "," + doc.data().Certification ;
+//if(doc.data().Certification != null){///
+if(doc.data().Certification==Certification && doc.id==umail){
+  dt1 = new Date(doc.data().Time.seconds * 1000);
+  if((dt2-dt1)/(1000*60)<=10000)
+  document.getElementById("MSG").innerHTML=doc.id + "," + (dt2-dt1)/(1000*60);//  doc.data().Certification ;
+  else
+  document.getElementById("MSG").innerHTML="認證碼已逾時！";
+}
+else
+  document.getElementById("MSG").innerHTML="會員Email或認證碼錯誤！";
+//  document.getElementById("MSG").innerHTML=doc.id + "," + doc.data().Certification ;// + doc.data().Time ;// + "," + doc.data().Certification;
+//}
+//else
+//document.getElementById("MSG").innerHTML="會員Email有誤！";
+});
+}
+else
+  document.getElementById("MSG").innerHTML="未得到授權！";
+//
+*/
+/*
+db.collection('Users').where('Certification','==',Certification).get().then(result => {
+  Array.prototype.forEach.call(result.docs, r => {
+    document.getElementById("table1").innerHTML=r.id;
+    document.getElementById("table2").innerHTML=r.data().Certification;
+
+dt1=new Date(r.data().Time.seconds * 1000);
+dt_dif=(dt2-dt1)/(1000*60);
+    document.getElementById("table3").innerHTML=dt_dif;//(dt2-dt1)/(1000*60);
+if(dt_dif<=10)
+document.getElementById("MSG").innerHTML=r.id+"登入"+"<br />";//
+else
+document.getElementById("MSG").innerHTML=r.id+"認證碼逾時"+"<br />";//
+  });
+});//},false);
+*/
+//});
+
+/*
+let dt1 = new Date(2022, 10, 22, 1, 0, 0);//
+let dt2 = new Date(2022, 10, 22, 2, 0, 19);//
+*/
+//all_storedata();
+
+function all_storedata()
+ {
+/**/
+var ref = db.collection('Student');
+//ref.get().then(querySnapshot => {
+ref.get().then(function(querySnapshot) {
+//  if(querySnapshot.exists) {
+//*
+  if(!querySnapshot.empty) {
+//    querySnapshot.forEach(function(doc) {
+//document.getElementById("MSG").innerHTML+=doc.id + "," + doc.data().Class + doc.data().Alias + "<br />";
+//});
+//  document.getElementById("MSG").innerHTML = querySnapshot.data().Class + querySnapshot.data().Alias + "<br />";
+//  }
+//*/
+//顯示全部資料
+//db.collection('Student').get().then(result => {//
+//  if(result) {
+    document.getElementById("table1").innerHTML=" ";//
+    document.getElementById("table2").innerHTML=" ";//
+    document.getElementById("table3").innerHTML=" ";//
+//  }
+//  Array.prototype.forEach.call(result.docs, r => //{
+    querySnapshot.forEach(function(r) {///
+    document.getElementById("table1").innerHTML+="<br />"+r.id;
+    document.getElementById("table2").innerHTML+="<br />"+r.data().Class;
+    document.getElementById("table3").innerHTML+="<br />"+r.data().Alias;
+    //id.innerHTML=r.id;
+    //ClassN.value=r.data().Class;
+    //AliasN.value=r.data().Alias; //(dt2-dt1)/1000;
+  });//
+}///if(querySnapshot.exists)
+//document.getElementById("MSG").innerHTML+=memid+"<br />";///
+//  })//
+//  .catch(error => {
+//    document.getElementById("MSG").innerHTML+=error.message+"<br />";//
+});//
+}
+
+</script>
+<!---->
+<script>
+//主要
+//取得使用者資訊
+firebase.auth().onAuthStateChanged(function(user) {
+  if(user && member) {//
+    // 使用者已登入，可以取得資料
+    var email = user.email;
+    //var uid = user.uid;
+    uid = user.uid;
+    //console.log(email, uid);
+//member
+///var theID="";///=<%=id%>;///
+//    document.getElementById("MSG").innerHTML= 
+member +"登入"+"<br />"; ///+"~"+ theID;//
+/*新增登出按鈕*/
+    document.getElementById("MSG").innerHTML= 
+member +"登入  <button type=submit id=logoutBtn> 登出 </button><br />"; 
+var logoutBtn = document.getElementById("logoutBtn");
+logoutBtn.addEventListener("click",function(){
+   logout();
+   //document.cookie = 'member=';
+});
+/**/
+//    document.getElementById("MSG").innerHTML=email+"登入"+"<br />";//
+all_storedata();//
+  } else {
+    // 使用者未登入
+    uid = null;
+//    document.getElementById("MSG").innerHTML="目前為未登入狀態"+"<br />";//
+var UrlString = document.location.href;///
+document.cookie = 'URLs=' + UrlString;///
+/*新增登入按鈕*/
+    document.getElementById("MSG").innerHTML="目前為未登入狀態  <button type=submit id=loginBtn> 登入 </button><br />";
+var loginBtn = document.getElementById("loginBtn");
+loginBtn.addEventListener("click",function(){
+  document.location.href = "./f_Auth.html";
+});
+  document.location.href = "./f_Auth.html";
+/**/
+  }
+});
+</script>
+<!---->
+<script>
+
+/*驗證登出*/
+//logoutSmtBtn.addEventListener("click",function(){
+function logout(){
+//
+//登出
+firebase.auth().signOut()
+  .then(function() {
+    // 登出後強制重整一次頁面
+    //window.location.reload();
+    document.getElementById("MSG").innerHTML+=member +"已登出<br />";//+email+"<br />";//
+  }).catch(function(error) {
+    //console.log(error.message)
+    document.getElementById("MSG").innerHTML+=error.message+"<br />";//
+  });
+//
+}
+//});
+/**/
+
+upSmtBtn.addEventListener("click",function(){
+    if(uid && member) {
+//原
+    document.getElementById("MSG2").innerHTML+="更新"+id.innerHTML+"<br />";//
+    db.collection('Student').doc(id.innerHTML).set({
+      Class: ClassN.value,
+      Alias: AliasN.value
+    }, {
+      merge: true
+    });
+//
+/*測試
+dt1 = new Date();
+//let dt1 = new Date(2022, 10, 23, 1, 0, 0);//
+//let dt2 = new Date(2022, 10, 23, 2, 0, 19);//
+    document.getElementById("MSG").innerHTML+="更新"+id.innerHTML+"<br />";//
+    db.collection('Users').doc(id.innerHTML).set({
+      Certification: ClassN.value,
+      Time: dt1
+    }, {
+      merge: true
+    });
+*/
+    } else {
+    // 使用者未登入
+    document.getElementById("MSG2").innerHTML+="未登入無更新權限！"+"<br />";//
+    }
+/*無用
+    id.innerHTML=r.id;
+    ClassN.value=r.data().Certification;
+    AliasN.value= dt1;//"???" + (dt2-r.data().Time)/(1000*60*60) + ",,," + (dt2-dt1)/(1000*60*60);//
+*/
+all_storedata();//
+//
+});
+
+</script>
+
+<script>
+
+ function storedata(cpname)
+ {
+///document.location.href = URLs;
+/*Table
+//Cloud Firestore
+//document.getElementById("table1").innerHTML="查1";//
+//var db = firebase.firestore();
+    document.getElementById("table1").innerHTML="＿";//
+    document.getElementById("table2").innerHTML="＿";//
+    document.getElementById("table3").innerHTML="＿";//
+*/
+/*
+var ref = db.collection('Student').where('Class','==',cpname); //.doc('C101');//.where('Class','==',cpname);
+//ref.onSnapshot(doc => {
+//X//  Array.prototype.forEach.call(doc, r => {
+//ref.get().then(docSnapshot => {
+//ref.get().then(querySnapshot => {
+ref.get().then(function(querySnapshot) {
+var i=0;
+//  if(querySnapshot.exists) {
+  if(!querySnapshot.empty) {
+    querySnapshot.forEach(function(doc) {
+document.getElementById("MSG").innerHTML+=doc.id + "," + doc.data().Class + doc.data().Alias + "<br />";
+    i++;
+});
+//  document.getElementById("MSG").innerHTML = querySnapshot.data().Class + querySnapshot.data().Alias + "<br />";
+  }
+*/
+/*
+    querySnapshot.forEach(function(doc) {
+document.getElementById("MSG").innerHTML+=doc.id + "," + doc.data().Class + doc.data().Alias + "<br />";
+//document.getElementById("MSG").innerHTML+=doc.id + "<br />";
+i++;
+*/
+/*
+//});
+document.getElementById("MSG").innerHTML+= i + " 筆<br />";
+});
+*/
+//
+//
+db.collection('Student').where('Class','==',cpname).get().then(result => {//
+//不行db.collection('Student').doc('C101').get(getOptions).then(result => {//
+//db.collection('Student').get().then(result => {//
+//db.collection('collection').get().then(result => {
+
+//document.getElementById("table1").innerHTML="查2";//
+  Array.prototype.forEach.call(result.docs, r => {
+    //console.log(r.id)
+    //console.log(r.data())
+//document.getElementById("table1").innerHTML="查3";//
+//
+/*
+    document.getElementById("table2").innerHTML=r.id;
+    //document.getElementById("table3").innerHTML=r.data();
+    document.getElementById("table3").innerHTML=r.data().Class;
+*/
+//
+/*
+    document.getElementById("table1").innerHTML=r.id;
+    document.getElementById("table2").innerHTML=r.data().Class;
+    document.getElementById("table3").innerHTML=r.data().Alias;
+*/
+    id.innerHTML=r.id;
+    ClassN.value=r.data().Class;
+    AliasN.value=r.data().Alias;
+  });//forEach
+//document.cookie = 'memid=testUser';///
+/*
+document.getElementById("MSG").innerHTML = "<form id=urlForm method=post action='./Login.html'><input type=hidden id=memid name=memid value=sSS><input type=submit></form>";
+urlForm.submit();
+*/
+});//where
+//
+//
+
+/*測試
+dt2 = new Date();//(2022, 10, 23, 13, 0, 0);//
+db.collection('Users').where('Certification','==',cpname).get().then(result => {//
+//不行db.collection('Users').doc('Account').get(getOptions).then(result => {//
+//db.collection('Student').get().then(result => {//
+//db.collection('collection').get().then(result => {
+
+//document.getElementById("table1").innerHTML="查2";//
+  Array.prototype.forEach.call(result.docs, r => {
+    //console.log(r.id)
+    //console.log(r.data())
+//document.getElementById("table1").innerHTML="查3";//
+    document.getElementById("table1").innerHTML=r.id+"?";
+    document.getElementById("table2").innerHTML=r.data().Certification;
+
+dt1=new Date(r.data().Time.seconds * 1000);
+    document.getElementById("table3").innerHTML=dt1;//r.data().Time;//.seconds.;//.toDateString();//
+    id.innerHTML=r.id;
+    ClassN.value=r.data().Certification;
+    AliasN.value=(dt2-dt1)/(1000*60);//new Date(r.data().Time.seconds * 1000);
+//(dt2-r.data().Time)/(1000*60*60);//"???" + (dt2-r.data().Time.dateValue())/(1000*60*60) + ",,," + (dt2-dt1)/(1000*60*60);//dt2;//
+  });//
+
+});//
+*/
+
+//
+ };//
+
+</script>
+
+</html>
