@@ -1,0 +1,21 @@
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const targetKey = urlParams.get('target');
+
+/*
+    // 定義允許跳轉的「安全白名單」
+    const allowedSites = {
+        'google': 'https://www.google.com',
+        'github': 'https://github.com',
+        'myblog': 'https://shil19.github.io/11413/'
+    };
+
+    // 比對代號是否存在於白名單中
+    if (targetKey && allowedSites[targetKey]) {
+        window.location.href = allowedSites[targetKey];
+    } else {
+        // 如果不在白名單內，拒絕轉址
+        document.body.innerHTML = "<h3>⚠️ 存取被拒：不允許自動跳轉至未驗證的外部網站。</h3>";
+    }
+*/
+</script>
