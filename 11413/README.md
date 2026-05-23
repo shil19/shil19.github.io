@@ -5,7 +5,7 @@
 > 
 > [202511_林園高中防疫措施-0527.pdf](https://shil19.github.io/11413/202511_%E6%9E%97%E5%9C%92%E9%AB%98%E4%B8%AD%E9%98%B2%E7%96%AB%E6%8E%AA%E6%96%BD-0527.pdf)
 >
-> [114年入學學生資訊教育網站](http://bit.ly/lykh14)
+> [202510_線上學習資源推廣資料.jpg](https://shil19.github.io/11413/202510_%E7%B7%9A%E4%B8%8A%E5%AD%B8%E7%BF%92%E8%B3%87%E6%BA%90%E6%8E%A8%E5%BB%A3%E8%B3%87%E6%96%99.jpg)
 > 
 > [113年入學學生資訊教育網站](http://bit.ly/ly13)
 >
