@@ -1,10 +1,7 @@
 [//]: # (shil19.github.io)
 
 ## 資訊教育網站
-> [202602_114-2行事簡曆.pdf](https://shil19.github.io/11413/202602_114-2%E8%A1%8C%E4%BA%8B%E7%B0%A1%E6%9B%86.pdf)
-> 
-> [202602_114-2行事簡曆.pdf](https://shil19.github.io/11413/202602_114-2%E8%A1%8C%E4%BA%8B%E7%B0%A1%E6%9B%86.pdf)
-> 
+
 > [202602_114-2行事簡曆.pdf](https://shil19.github.io/11413/reurl.html?target=9)
 > 
 > [202511_林園高中防疫措施-0527.pdf](https://shil19.github.io/11413/reurl.html?target=8)
@@ -24,7 +21,11 @@
 > [202506_113學年度高雄區高中職免試入學超額比序簡要說明.pdf](https://shil19.github.io/11413/reurl.html?target=1)
 
 <!--
-  <li><a href="https://wikipedia.org" target="_blank">維基百科</a></li>
+> [202602_114-2行事簡曆.pdf](https://shil19.github.io/11413/202602_114-2%E8%A1%8C%E4%BA%8B%E7%B0%A1%E6%9B%86.pdf)
+> 
+> [202602_114-2行事簡曆.pdf](https://shil19.github.io/11413/202602_114-2%E8%A1%8C%E4%BA%8B%E7%B0%A1%E6%9B%86.pdf)
+> 
+<li><a href="https://wikipedia.org" target="_blank">維基百科</a></li>
 
 高雄市林園高級中學午餐退費申請表.docx
 https://shil19.github.io/11413/%E9%AB%98%E9%9B%84%E5%B8%82%E6%9E%97%E5%9C%92%E9%AB%98%E7%B4%9A%E4%B8%AD%E5%AD%B8%E5%8D%88%E9%A4%90%E9%80%80%E8%B2%BB%E7%94%B3%E8%AB%8B%E8%A1%A8.docx
