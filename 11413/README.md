@@ -4,6 +4,14 @@
 > [114年入學學生資訊教育網站](http://bit.ly/lykh14)
 > 
 > [113年入學學生資訊教育網站](http://bit.ly/ly13)
+>
+> > [114年入學學生資訊教育網站](http://bit.ly/lykh14)
+> 
+> [113年入學學生資訊教育網站](http://bit.ly/ly13)
+>
+> [114年入學學生資訊教育網站](http://bit.ly/lykh14)
+> 
+> [113年入學學生資訊教育網站](http://bit.ly/ly13)
 > 
 > [202511_林園高中防疫措施-0527.pdf](https://shil19.github.io).  [202602_114-2行事簡曆.pdf](https://shil19.github.io/11413/202602_114-2%E8%A1%8C%E4%BA%8B%E7%B0%A1%E6%9B%86.pdf).  [202511_林園高中防疫措施-0527.pdf](https://shil19.github.io).
 > [202602_114-2行事簡曆.pdf](https://shil19.github.io/11413/202602_114-2%E8%A1%8C%E4%BA%8B%E7%B0%A1%E6%9B%86.pdf).  [202511_林園高中防疫措施-0527.pdf](https://shil19.github.io).
