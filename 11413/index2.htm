@@ -65,7 +65,7 @@
     <title>林園高中文件</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown.min.css">
-    
+<!--
     <style>
         /* 2. 設定網頁的寬度與留白 */
         .markdown-body {
@@ -93,7 +93,27 @@
         }
     </style>
 </head>
-<!---->
+-->
+    <style>
+/* 升級版：強制清單完全靠左 */
+ul, ol {
+    list-style-type: none !important;   /* 強制拔掉點點 */
+    padding-left: 0 !important;         /* 強制清除內縮 */
+    margin-left: 0 !important;          /* 強制清除外邊距引起的縮進 */
+    
+    /* 只保留上下間距，左右清空 */
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* 安全起見，連內層的 li 一併校正 */
+li {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+    text-align: left; /* 確保文字齊左 */
+}
+    </style>
+</head>
 
 <body class="markdown-body">
 
