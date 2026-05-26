@@ -58,7 +58,8 @@
         }
     </style>
 </head>
---><!---->
+--><!--
+-->
 <!--
 <head>
     <meta charset="UTF-8">
@@ -93,22 +94,6 @@
         }
     </style>
 </head>
--->
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>林園高中文件</title>
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown.min.css">
-    <style>
-        /* 2. 設定網頁的寬度與留白 */
-        .markdown-body {
-            box-sizing: border-box;
-            min-width: 200px;
-            max-width: 850px; /* 限制寬度，閱讀最舒適 */
-            margin: 0 auto;   /* 讓內容水平置中 */
-            padding: 45px;    /* 四周留白 */
-        }
 
 /* 升級版：強制清單完全靠左 */
 ul, ol {
@@ -127,6 +112,33 @@ li {
     margin-left: 0 !important;
     text-align: left; /* 確保文字齊左 */
 }
+-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>林園高中文件</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown.min.css">
+    <style>
+        /* 2. 設定網頁的寬度與留白 */
+        .markdown-body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 850px; /* 限制寬度，閱讀最舒適 */
+            margin: 0 auto;   /* 讓內容水平置中 */
+            padding: 45px;    /* 四周留白 */
+        }
+
+        /* 2. 清單樣式調整：不要點點、文字直接靠左 */
+        ul, ol {
+            list-style-type: none;  /* 移除預設的圓點與數字 */
+            padding-left: 0 !important;        /* 拔掉左側縮進，讓文字完美靠左對齊 */
+            margin: 20px 0;
+        }
+
+        li {
+            margin-bottom: 18px;    /* 清單項目之間也加寬，呼應大行距的視覺感 */
+        }
 
         /* 手機版自動縮小留白 */
         @media (max-width: 767px) {
