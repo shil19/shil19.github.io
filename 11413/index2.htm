@@ -112,6 +112,17 @@ li {
     margin-left: 0 !important;
     text-align: left; /* 確保文字齊左 */
 }
+
+        /* 🎯 標題樣式調整：設為明確的粗體字 */
+        h1, h2, h3 {
+            font-weight: bold !important; /* 或者是 700，強制讓標題變粗體 */
+            color: #000000;              /* 顏色加深到純黑，視覺上會更顯眼 */
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+        h1 { font-size: 32px; border-bottom: 2px solid #dbdbdb; padding-bottom: 10px; }
+        h2 { font-size: 24px; border-bottom: 2px solid #e8e8e8; padding-bottom: 5px; }
+
 -->
 <head>
     <meta charset="UTF-8">
@@ -128,16 +139,23 @@ li {
             margin: 0 auto;   /* 讓內容水平置中 */
             padding: 45px;    /* 四周留白 */
         }
-
-        /* 🎯 標題樣式調整：設為明確的粗體字 */
-        h1, h2, h3 {
-            font-weight: bold !important; /* 或者是 700，強制讓標題變粗體 */
-            color: #000000;              /* 顏色加深到純黑，視覺上會更顯眼 */
-            margin-top: 40px;
-            margin-bottom: 20px;
-        }
-        h1 { font-size: 32px; border-bottom: 2px solid #dbdbdb; padding-bottom: 10px; }
-        h2 { font-size: 24px; border-bottom: 2px solid #e8e8e8; padding-bottom: 5px; }
+        
+h1, h2, h3 {
+    /* 這是官方採用的標準字體順序 */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+    
+    /* 關鍵：GitHub 標題是 600（Semi-bold），不是 700（Bold） */
+    font-weight: 600 !important; 
+    
+    /* 關鍵：使用官方的深灰黑，比純黑更耐看 */
+    color: #24292f; 
+    
+    line-height: 1.25;
+    margin-top: 24px;
+    margin-bottom: 16px;
+}
+h1 { font-size: 2px; border-bottom: 1px solid #d8dee4; padding-bottom: 0.3em; }
+h2 { font-size: 1.5em; border-bottom: 1px solid #d8dee4; padding-bottom: 0.3em; }
         
         /* 2. 清單樣式調整：不要點點、文字直接靠左 */
         ul, ol {
