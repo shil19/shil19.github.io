@@ -50,6 +50,36 @@ function showTable(data){
 
 }
 
+function showli(data){
+
+    let html = "<table>";
+
+    data.forEach((row,index)=>{
+
+        html += "<tr>";
+
+        row.forEach(cell=>{
+
+            if(index==0){
+                html += "<th>" + cell + "</th>";
+            }
+            else{
+                html += "<td>" + cell + "</td>";
+            }
+
+        });
+
+        html += "</tr>";
+
+    });
+
+
+    html += "</table>";
+
+    document.getElementById("result").innerHTML = html;
+
+}
+
 </script>
 
 
