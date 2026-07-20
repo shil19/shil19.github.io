@@ -1,0 +1,51 @@
+<script>
+
+const url =
+"https://script.google.com/macros/s/xxxxx/exec?sheet=工作表1";
+
+
+fetch(url)
+.then(response => response.json())
+.then(data => {
+
+    console.log(data);
+
+    showTable(data);
+
+})
+.catch(error => {
+    console.error(error);
+});
+
+
+function showTable(data){
+
+    let html = "<table>";
+
+    data.forEach((row,index)=>{
+
+        html += "<tr>";
+
+        row.forEach(cell=>{
+
+            if(index==0){
+                html += "<th>" + cell + "</th>";
+            }
+            else{
+                html += "<td>" + cell + "</td>";
+            }
+
+        });
+
+        html += "</tr>";
+
+    });
+
+
+    html += "</table>";
+
+    document.getElementById("result").innerHTML = html;
+
+}
+
+</script>
