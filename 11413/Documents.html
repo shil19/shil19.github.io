@@ -133,10 +133,10 @@ function showUl(data){
 
     data.forEach((row,index)=>{
 
-        html += "<li>";
+        //html += "<li>";
 
         if(index>0){
-            html = "<a href=" + row[1] + ">" + row[0] + "</a>" + html;
+            html = "<li><a href=" + row[1] + ">" + row[0] + "</a></li>" + html;
 //            html += "<a href=" + row[1] + ">" + row[0] + "</a>";
         }
 /*
@@ -158,7 +158,7 @@ function showUl(data){
 
         });
 */
-        html += "</li>";
+        //html += "</li>";
 
     });
 
