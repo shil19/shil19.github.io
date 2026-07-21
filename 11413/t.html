@@ -134,8 +134,17 @@ function showUl(data){
     data.forEach((row,index)=>{
 
         html += "<li>";
-      
-        html += "<a href=" + row[1] + ">" + row[0] + "</a>";
+
+        if(index>0){
+            html += "<a href=" + row[1] + ">" + row[0] + "</a>";
+        }
+/*
+        if(index==0){
+            //html += "<a href=" + row[1] + ">" + row[0] + "</a>";
+        }
+        else{
+            html += "<a href=" + row[1] + ">" + row[0] + "</a>";
+        }
 /*
         row.forEach(cell=>{
 
