@@ -66,7 +66,7 @@ h2 { font-size: 24px; border-bottom: 1px solid #e8e8e8; padding-bottom: 5px; }
     <h2>提供給家長的檔案清單</h2>
 
 <div id="result">
-讀取中...123
+讀取中...
 </div>
 <!--
 <table><tr><th>測試</th></tr><tr><td>測試</td></tr></table>
@@ -132,13 +132,13 @@ function showUl(data){
 
     let html = "<blockquote><ul>";
 
-    data.forEach((row,index)=>{
+    data.reverse().forEach((row,index)=>{
 
-        //html += "<li>";
+        html += "<li>";
 
         if(index>0){
-            html += "<li><a href=" + row[1] + ">" + row[0] + "</a></li>";// + html;//
-            //html += "<a href=" + row[1] + ">" + row[0] + "</a>";
+            //html += "<li><a href=" + row[1] + ">" + row[0] + "</a></li>";// + html;//
+            html += "<a href=" + row[1] + ">" + row[0] + "</a>";
         }
 /*
         if(index==0){
@@ -147,19 +147,8 @@ function showUl(data){
         else{
             html += "<a href=" + row[1] + ">" + row[0] + "</a>";
         }
-/*
-        row.forEach(cell=>{
-
-            if(index==0){
-                html += "<th>" + cell + "</th>";
-            }
-            else{
-                html += "<td>" + cell + "</td>";
-            }
-
-        });
 */
-        //html += "</li>";
+        html += "</li>";
 
     });
 
