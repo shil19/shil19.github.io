@@ -73,11 +73,11 @@ function showTable(data){
 
 function showUl(data){
 
-    let html = "<blockquote>";
+    let html = "<blockquote><ul>";
 
     data.forEach((row,index)=>{
 
-        html += "<tr>";
+        html += "<li>";
 
         row.forEach(cell=>{
 
@@ -90,12 +90,12 @@ function showUl(data){
 
         });
 
-        html += "</tr>";
+        html += "</li>";
 
     });
 
 
-    html += "</table>";
+    html += "</ul></blockquote>";
 
     document.getElementById("result").innerHTML = html;
 
