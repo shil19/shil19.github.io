@@ -78,7 +78,9 @@ function showUl(data){
     data.forEach((row,index)=>{
 
         html += "<li>";
-
+      
+        html += "<a href=>" + row[0] + "</a>";
+/*
         row.forEach(cell=>{
 
             if(index==0){
@@ -89,7 +91,7 @@ function showUl(data){
             }
 
         });
-
+*/
         html += "</li>";
 
     });
