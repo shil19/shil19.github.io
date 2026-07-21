@@ -136,7 +136,8 @@ function showUl(data){
         html += "<li>";
 
         if(index>0){
-            html += "<a href=" + row[1] + ">" + row[0] + "</a>";
+            html = "<a href=" + row[1] + ">" + row[0] + "</a>" + html;
+//            html += "<a href=" + row[1] + ">" + row[0] + "</a>";
         }
 /*
         if(index==0){
