@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documents</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown.min.css">
+    <style>
+        /* 2. 設定網頁的寬度與留白 */
+        .markdown-body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 850px; /* 限制寬度，閱讀最舒適 */
+            margin: 0 auto;   /* 讓內容水平置中 */
+            padding: 45px;    /* 四周留白 */
+        }
+        
+h1, h2, h3 {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    
+    /* 關鍵：Jekyll 的優雅來自於大標題其實「不粗」，而是靠字體大小撐出層次 */
+    font-weight: 700 !important; 
+    
+    color: #333333; /*#111111;*/
+    
+    /* 關鍵：微調字距，讓大字體看起來更緊實高級 */
+    letter-spacing: -1px; 
+    
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+h1 { font-size: 32px; border-bottom: 1px solid #e8e8e8; padding-bottom: 10px; }
+h2 { font-size: 24px; border-bottom: 1px solid #e8e8e8; padding-bottom: 5px; }
+        
+        /* 2. 清單樣式調整：不要點點、文字直接靠左 */
+        ul, ol {
+            list-style-type: none;  /* 移除預設的圓點與數字 */
+            padding-left: 0 !important;        /* 拔掉左側縮進，讓文字完美靠左對齊 */
+            margin: 20px 0;
+        }
+
+        li {
+            margin-bottom: 18px;    /* 清單項目之間也加寬，呼應大行距的視覺感 */
+        }
+
+        /* 手機版自動縮小留白 */
+        @media (max-width: 767px) {
+            .markdown-body { padding: 15px; }
+        }
+    </style>
+    <!--
+    <base target="_top">
+    <style>
+      table { border-collapse: collapse; width: 100%; max-width: 500px; }
+      th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+      th { background-color: #f2f2f2; }
+    </style>
+    -->
+  </head>
+  <body class="markdown-body">
+
+
+    <h1>林園高中</h1>
+    <h2>提供給家長的檔案清單</h2>
+
+<div id="result">
+讀取中...
+</div>
+<!--
+<table><tr><th>測試</th></tr><tr><td>測試</td></tr></table>
+-->
+    
+  </body>
+</html>
+<script>
+
+const url =
+"https://script.google.com/a/macros/scjh.kh.edu.tw/s/AKfycbxkdpuUhMvHOHiKxO8TM9f60mnaiXN945OAi3iFZgAPxDXZneNbfoECl1lAnqmQFgT4/exec?sheet=工作表1"; // DocumentsJSON
+//const url =
+"https://script.google.com/a/macros/scjh.kh.edu.tw/s/AKfycbx-vj-k0emXu0pAHjDlHYVhmtx6efngrFYBgItK9OAK4XEZ_XGIxuCg4CR2a2KaxE4o/exec?sheet=工作表1";
+//const url =
+//"https://script.google.com/a/macros/scjh.kh.edu.tw/s/AKfycbx-vj-k0emXu0pAHjDlHYVhmtx6efngrFYBgItK9OAK4XEZ_XGIxuCg4CR2a2KaxE4o/exec?sheet=一下三段";
+
+fetch(url)
+.then(response => response.json())
+.then(data => {
+
+    console.log(data);
+
+    showUl(data);
+    //showTable(data);
+
+})
+.catch(error => {
+    console.error(error);
+});
+
+
+function showTable(data){
+
+    let html = "<table>";
+
+    data.forEach((row,index)=>{
+
+        html += "<tr>";
+
+        row.forEach(cell=>{
+
+            if(index==0){
+                html += "<th>" + cell + "</th>";
+            }
+            else{
+                html += "<td>" + cell + "</td>";
+            }
+
+        });
+
+        html += "</tr>";
+
+    });
+
+
+    html += "</table>";
+
+    document.getElementById("result").innerHTML = html;
+
+}
+
+function showUl(data){
+
+    let html = "<blockquote><ul>";
+
+    data.reverse().forEach((row,index)=>{
+
+        html += "<li>";
+
+        if(index<data.length-1){
+            //html += "<li><a href=" + row[1] + ">" + row[0] + "</a></li>";// + html;//
+            html += "<a href=" + row[1] + ">" + row[0] + "</a>";
+        }
+/*
+        if(index==0){
+            //html += "<a href=" + row[1] + ">" + row[0] + "</a>";
+        }
+        else{
+            html += "<a href=" + row[1] + ">" + row[0] + "</a>";
+        }
+*/
+        html += "</li>";
+
+    });
+
+
+    html += "</ul></blockquote>";
+
+    document.getElementById("result").innerHTML = html;
+
+}
+
+</script>
+
+
+<!--
+function showTable(data){
+
+let html="<table>";
+
+data.forEach((row,index)=>{
+
+html+="<tr>";
+
+row.forEach((cell,col)=>{
+
+if(index==0){
+
+html+="<th>"+cell+"</th>";
+
+}
+else if(col==1){
+
+html+="<td><a href='"+cell+"' target='_blank'>開啟</a></td>";
+
+}
+else{
+
+html+="<td>"+cell+"</td>";
+
+}
+
+});
+
+html+="</tr>";
+
+});
+
+html+="</table>";
+
+document.getElementById("result").innerHTML=html;
+
+}
+-->
