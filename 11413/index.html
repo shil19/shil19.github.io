@@ -63,7 +63,7 @@ h2 { font-size: 24px; border-bottom: 1px solid #e8e8e8; padding-bottom: 5px; }
 
 
     <h1>林園高中</h1>
-    <h2>提供給家長的檔案清單2</h2>
+    <h2>提供給家長的檔案清單</h2>
 
 <div id="result">
 讀取中...
@@ -128,7 +128,25 @@ function showTable(data){
 
 }
 
-function showUl(data){
+function showUl(data) {
+
+    const html = data
+        .slice()
+        .reverse()
+        .map(row => `
+            <li>
+                <a href="${row[1]}" target="_blank" rel="noopener">
+                    ${row[0]}
+                </a>
+            </li>
+        `)
+        .join("");
+
+    document.getElementById("result").innerHTML =
+        `<div class="file-list"><ul>${html}</ul></div>`;
+}
+
+function showUl_(data){
 
     let html = "<blockquote><ul>";
 
