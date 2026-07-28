@@ -89,7 +89,7 @@ const baseUrl =
 //"https://script.google.com/a/macros/scjh.kh.edu.tw/s/AKfycbx-vj-k0emXu0pAHjDlHYVhmtx6efngrFYBgItK9OAK4XEZ_XGIxuCg4CR2a2KaxE4o/exec?sheet=工作表1";
 //const url =
 //"https://script.google.com/a/macros/scjh.kh.edu.tw/s/AKfycbx-vj-k0emXu0pAHjDlHYVhmtx6efngrFYBgItK9OAK4XEZ_XGIxuCg4CR2a2KaxE4o/exec?sheet=一下三段";
-
+/*
 fetch(baseUrl)
 .then(response => response.json())
 .then(data => {
@@ -103,7 +103,7 @@ fetch(baseUrl)
 .catch(error => {
     console.error(error);
 });
-
+*/
 
 //const baseUrl =
 "https://script.google.com/a/macros/scjh.kh.edu.tw/s/AKfycbxkdpuUhMvHOHiKxO8TM9f60mnaiXN945OAi3iFZgAPxDXZneNbfoECl1lAnqmQFgT4/exec";
@@ -124,6 +124,8 @@ function search() {
         })
         .catch(err => console.error(err));
 }
+
+search();
 
 function showTable(data){
 
@@ -204,6 +206,13 @@ function showUl_(data){
 
 }
 
+document.getElementById("keyword").addEventListener("keydown", function (event) {
+
+    if (event.key === "Enter") {
+        search();
+    }
+
+});
 </script>
 
 
