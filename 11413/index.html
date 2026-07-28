@@ -67,7 +67,7 @@ h2 { font-size: 24px; border-bottom: 1px solid #e8e8e8; padding-bottom: 5px; }
 
 
     <h1>林園高中</h1>
-    <h2>提供給家長的檔案清單</h2>
+    <h2>提供給家長的檔案清單3</h2>
 
 <div id="result">
 讀取中...
@@ -80,14 +80,14 @@ h2 { font-size: 24px; border-bottom: 1px solid #e8e8e8; padding-bottom: 5px; }
 </html>
 <script>
 
-const url =
+const baseUrl =
 "https://script.google.com/a/macros/scjh.kh.edu.tw/s/AKfycbxkdpuUhMvHOHiKxO8TM9f60mnaiXN945OAi3iFZgAPxDXZneNbfoECl1lAnqmQFgT4/exec?sheet=工作表1&keyword="; // DocumentsJSON
 //const url =
 //"https://script.google.com/a/macros/scjh.kh.edu.tw/s/AKfycbx-vj-k0emXu0pAHjDlHYVhmtx6efngrFYBgItK9OAK4XEZ_XGIxuCg4CR2a2KaxE4o/exec?sheet=工作表1";
 //const url =
 //"https://script.google.com/a/macros/scjh.kh.edu.tw/s/AKfycbx-vj-k0emXu0pAHjDlHYVhmtx6efngrFYBgItK9OAK4XEZ_XGIxuCg4CR2a2KaxE4o/exec?sheet=一下三段";
 
-fetch(url)
+fetch(baseUrl)
 .then(response => response.json())
 .then(data => {
 
@@ -101,6 +101,26 @@ fetch(url)
     console.error(error);
 });
 
+
+//const baseUrl =
+"https://script.google.com/a/macros/scjh.kh.edu.tw/s/AKfycbxkdpuUhMvHOHiKxO8TM9f60mnaiXN945OAi3iFZgAPxDXZneNbfoECl1lAnqmQFgT4/exec";
+
+function search() {
+
+    const keyword = document.getElementById("keyword").value;
+
+    //const url =
+    //    `${baseUrl}?sheet=工作表1&keyword=${encodeURIComponent(keyword)}`;
+    const url =
+        `${baseUrl}${encodeURIComponent(keyword)}`;
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            showUl(data);
+        })
+        .catch(err => console.error(err));
+}
 
 function showTable(data){
 
