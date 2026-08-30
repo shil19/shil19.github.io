@@ -68,10 +68,15 @@
     const COLORS = ['#4a7ec4', '#e8837f', '#9a9520', '#a33d28', '#d4a810', '#d06a9a', '#e67e22', '#9a93c4', '#5f6520'];
     //let items = ['Alex','Jordan','Sam','Riley','Morgan','Taylor','Casey','Quinn'];
     // 自動生成 1~31 號並過濾掉 21 號
-    let items = Array.from({ length: 31 }, (_, i) => i + 1)
-      .filter(num => num !== 21)
-      .map(num => `${num}號`); // 如果不需要「號」字，改成 `${num}` 即可    let spinning = false;
-
+    //let items = Array.from({ length: 31 }, (_, i) => i + 1)
+    //  .filter(num => num !== 21)
+    //  .map(num => `${num}號`); // 如果不需要「號」字，改成 `${num}` 即可    let spinning = false;
+    let items = [
+      '1號', '2號', '3號', '4號', '5號', '6號', '7號', '8號', '9號', '10號',
+      '11號', '12號', '13號', '14號', '15號', '16號', '17號', '18號', '19號', '20號',
+      '22號', '23號', '24號', '25號', '26號', '27號', '28號', '29號', '30號', '31號'
+    ];
+    
     let currentRotation = 0;
 
     const canvas = document.getElementById('wheel-canvas');
