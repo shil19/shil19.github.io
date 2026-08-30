@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en"><head><script>window["__codeletBootstrap__"]=JSON.parse('{"A":"A","B":"20260828-05-5fe3063","C":{"Abril Fatface":"YACgEZbkUVE,0","Alfa Slab One":"YACgEYS9sJU,0","Anton":"YACgEcYqQ-A,0","Archivo":"YAHO2-t-jNE,0","Arial":"YAGyDvJ_4Ts,0","Bebas Neue":"YACgESME5ew,0","Bricolage Grotesque":"YAFyMcdwzpc,0","Canva Sans":"YAFLd8sKbwc,2","Caveat":"YALBs2ploWQ,0","Comic Sans MS":"YAHO2VMiyZo,0","Cormorant Garamond":"YAFdJhX-538,0","Courier New":"YAGzXiGs0_8,0","DM Sans":"YAD1aU3sLnI,0","DM Serif Display":"YAD1aYG82rc,0","Forum":"YACgEcnnqB4,0","Fraunces":"YAEul-FRQw4,0","Georgia":"YAGzXkO0pEM,0","Helvetica Neue":"YAFcf6CtJfI,0","Impact":"YAFcfnjI7Vk,0","Inter":"YAFdJvSyp_k,3","Iowan Old Style":"YAGNIFa8j9o,0","Jacques Francois":"YAHO2a5g66Q,0","JetBrains Mono":"YAFdJksXcAk,0","Libre Baskerville":"YACgEUFdPdA,0","Manrope":"YAHO2b2feC4,0","Merriweather":"YACgEXvHxxs,0","Montserrat":"YADLjI9qxTA,0","Nunito":"YACgEX8C5Gg,0","Oleo Script":"YACgEQQ14jI,0","Phantom Sans":"YAHO2E8Pb88,0","Playfair Display":"YACgEYmuCJE,0","Poppins":"YAFdJjbTu24,1","Press Start 2P":"YAFyGr-8pmQ,0","Quicksand":"YADWjpfPmdk,0","Raleway":"YACgEVg3xZg,0","Segoe UI":"YAHNdRD1Klw,0","Source Sans 3":"YAG4lO1Mj10,0","Spectral":"YAHO2rVUHIM,0","Times New Roman":"YAGzXW3gftg,0","Times":"YAGzXW3gftg,0","Ubuntu":"YACgERDU--Q,0","Work Sans":"YAGXhLOKv44,0","Yellowtail":"YACgEYG4kG4,0","ui-monospace":"YADlN8CFZ8Q,0","ui-sans-serif":"YACkoN-xg4g,0"}}');</script><script src="/_sdk/50d846425a1e5082.telemetry_sdk.js" integrity="sha512-Otbex+ztlVbcEGql0rXGd/3E3ee/hqAntg6DeuUEMG6pIPbXGOSvZbFZVzknAXi1tH/itQ+ijEhOTr2aWj6CXg=="></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Name Picker</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'DM Sans', sans-serif; }
+    .chip { animation: chipIn 0.2s ease-out; }
+    @keyframes chipIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    @keyframes resultReveal { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    @keyframes confettiBurst {
+      0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+      100% { transform: translate(var(--tx), var(--ty)) rotate(var(--rot)); opacity: 0; }
+    }
+    .result-reveal { animation: resultReveal 0.5s cubic-bezier(0.34,1.56,0.64,1); }
+    .confetti-dot {
+      position: absolute; width: 8px; height: 8px; border-radius: 50%;
+      animation: confettiBurst 1s ease-out forwards;
+    }
+    #wheel-canvas { transition: transform 0s; }
+    #wheel-canvas.spinning { transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99); }
+    .frost { background: rgba(255,255,255,0.08); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/b3bf9e8ac58e6ad6.data_sdk.js" type="text/javascript" integrity="sha512-otc1u9NYq9Ms5Jt//7vmhrrqR5CLPr8Jdgs6741gqniClfLMcfmC+jK/cKuQdhLv6G0esJ/FzaMS9tv0T/vj/Q=="></script>
+  <script src="/_sdk/a6de989e8af05ea5.resizing_sdk.js" type="text/javascript" integrity="sha512-cceAQMIleYr/3eg7o5WzN46w0HpgI1sxi+5kDUb7CmTjHEpgBtINDxtOpnNeUtujjui8NG0OSDgUMl0/E2lT2A=="></script>
+ </head>
+ <body data-template-id="__page-root" class="w-full min-h-screen relative overflow-x-hidden" style="background: rgb(0, 87, 74);">
+  <div class="fixed inset-0 pointer-events-none" style="opacity:0.08; mix-blend-mode:overlay; z-index:50;">
+   <svg width="100%" height="100%"><filter id="grain">
+     <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"></feTurbulence>
+     <feColorMatrix type="saturate" values="0"></feColorMatrix>
+    </filter> <rect width="100%" height="100%" filter="url(#grain)"></rect>
+   </svg>
+  </div>
+  <main class="relative z-10 w-full max-w-5xl mx-auto px-6 py-28">
+   <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center"><!-- Left Column: Header + Input -->
+    <div class="flex flex-col gap-6">
+     <header>
+      <h1 data-template-id="page-title" class="canva-text" style="color: rgb(253, 248, 239); font-weight: 800; font-style: normal; font-size: 107px; letter-spacing: -0.124rem;">Spin the Wheel</h1>
+      <p data-template-id="page-subtitle" class="canva-text mt-3" style="color: rgb(253, 248, 239); font-weight: 400; font-style: normal; font-size: 24px;">Add names and take a spin!</p>
+     </header>
+     <div data-template-id="input-section" class="canva-section w-full rounded-2xl p-6" style="background: rgb(253, 248, 239);">
+      <form id="add-form" class="flex gap-2"><input id="item-input" type="text" data-template-id="item-input" class="canva-input flex-1 rounded-full px-4 py-2 border-none outline-none" style="background: rgba(255, 255, 255, 0.1); color: rgb(51, 51, 51); font-weight: 400; font-style: normal; font-size: 16px;" placeholder="Enter a name…"> <button data-template-id="add-button" type="submit" class="canva-button rounded-full px-5 py-2 font-semibold" style="background: rgb(2, 131, 113); color: rgb(255, 255, 255);"> <span data-template-id="add-button-label" class="canva-text" style="color: rgb(255, 255, 255); font-weight: 600; font-style: normal; font-size: 15px;">Add</span> </button>
+      </form>
+      <div id="chips" class="flex flex-wrap gap-2 mt-3"></div>
+      <div class="w-full flex justify-center mt-5">
+       <button data-template-id="clear-button" id="clear-btn" type="button" class="canva-button hidden rounded-full px-4 py-2 font-semibold" style="background: rgb(2, 131, 113); color: rgb(253, 248, 239); border: 1px solid rgba(255, 255, 255, 0.2); font-size: 14px;"> <span data-template-id="clear-button-label" class="canva-text" style="color: rgb(253, 248, 239); font-weight: 600; font-style: normal; font-size: 14px;">Clear all names</span> </button>
+      </div>
+     </div>
+    </div><!-- Right Column: Wheel + Spin + Result -->
+    <div class="flex flex-col items-center gap-8">
+     <div class="relative">
+      <div class="absolute top-[-24px] left-1/2 -translate-x-1/2 z-20 w-0 h-0" style="border-left:12px solid transparent;border-right:12px solid transparent;border-top:18px solid #ffffff;"></div>
+      <canvas id="wheel-canvas" width="840" height="840" class="rounded-full" style="width:min(420px,100vw);height:min(420px,100vw);"></canvas>
+     </div><button data-template-id="spin-button" id="spin-btn" class="canva-button rounded-full px-10 py-3 font-bold shadow-lg hover:scale-105 active:scale-95 transition-transform mt-6" style="background: rgb(253, 248, 239); color: rgb(255, 255, 255); font-size: 22px;"> <span data-template-id="spin-button-label" class="canva-text" style="color: rgb(2, 131, 113); font-weight: 700; font-style: normal; font-size: 22px;">Spin!</span> </button>
+     <div data-template-id="result-section" id="result-area" class="canva-section w-full rounded-2xl p-6 text-center hidden relative overflow-hidden frost" style="background: rgba(255, 255, 255, 0.08);">
+      <p data-template-id="result-label" class="canva-text" style="color: rgb(148, 163, 184); font-weight: 400; font-style: normal; font-size: 18px;">Winner:</p>
+      <p data-template-id="result-value" class="canva-text mt-2" style="color: rgb(255, 255, 255); font-weight: 800; font-size: 32px;"></p>
+     </div>
+    </div>
+   </div>
+  </main>
+  <script src="/_sdk/c6bcadf20ce5820f.editing_sdk.js" integrity="sha512-LVukVCTKnKSxy98w+wCVzDAxVXBG2vy32XblXlmJD9CPFnF2/FVc75CFngl41IdXcX3sVHJc9olw64zrPM/FIA=="></script>
+  <script>
+    const COLORS = ['#4a7ec4', '#e8837f', '#9a9520', '#a33d28', '#d4a810', '#d06a9a', '#e67e22', '#9a93c4', '#5f6520'];
+    let items = ['Alex','Jordan','Sam','Riley','Morgan','Taylor','Casey','Quinn'];
+    let spinning = false;
+    let currentRotation = 0;
+
+    const canvas = document.getElementById('wheel-canvas');
+    const ctx = canvas.getContext('2d');
+    const chipsEl = document.getElementById('chips');
+    const spinBtn = document.getElementById('spin-btn');
+    const clearBtn = document.getElementById('clear-btn');
+    const resultArea = document.getElementById('result-area');
+
+    function drawWheel() {
+      const dpr = window.devicePixelRatio || 1;
+      const w = canvas.width, h = canvas.height, cx = w/2, cy = h/2, r = w/2 - 4;
+      ctx.clearRect(0,0,w,h);
+      if (!items.length) return;
+      const arc = (Math.PI*2)/items.length;
+      
+      // Draw outer glow/border
+      ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2); 
+      ctx.strokeStyle = 'rgba(255,255,255,0.15)'; ctx.lineWidth = 3; ctx.stroke();
+      
+      items.forEach((item, i) => {
+        const start = i * arc, end = start + arc;
+        ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,r,start,end); ctx.closePath();
+        ctx.fillStyle = COLORS[i % COLORS.length]; ctx.fill();
+        
+        // Rounded segment divider lines
+        ctx.strokeStyle = 'rgba(255,255,255,0.5)'; ctx.lineWidth = 2.5; ctx.lineCap = 'round'; ctx.stroke();
+        
+        // Text without drop shadow
+        ctx.save(); ctx.translate(cx,cy); ctx.rotate(start + arc/2);
+        
+        // Main text layer
+        ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+        ctx.fillStyle = '#ffffff'; 
+        ctx.font = `700 ${Math.min(40, 280/items.length)}px 'DM Sans', sans-serif`;
+        ctx.fillText(item.length > 12 ? item.slice(0,11)+'…' : item, r - 14, 0);
+        ctx.restore();
+      });
+    }
+
+    function renderChips() {
+      chipsEl.innerHTML = '';
+      items.forEach((item, i) => {
+        const chip = document.createElement('span');
+        chip.className = 'chip inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-semibold cursor-default whitespace-nowrap';
+        chip.style.background = COLORS[i % COLORS.length]; chip.style.color = '#fff';
+        chip.innerHTML = `${item}<button class="ml-1 hover:opacity-70" style="font-size:16px;line-height:1;" aria-label="Remove ${item}">&times;</button>`;
+        chip.querySelector('button').onclick = () => { items.splice(i,1); renderChips(); drawWheel(); updateSpinState(); };
+        chipsEl.appendChild(chip);
+      });
+    }
+
+    function updateSpinState() {
+      spinBtn.disabled = items.length < 2 || spinning;
+      spinBtn.style.opacity = spinBtn.disabled ? '0.5' : '1';
+      clearBtn.classList.toggle('hidden', items.length === 0);
+    }
+
+    document.getElementById('add-form').addEventListener('submit', e => {
+      e.preventDefault();
+      const input = document.getElementById('item-input');
+      const val = input.value.trim();
+      if (val && items.length < 20) { items.push(val); input.value = ''; renderChips(); drawWheel(); updateSpinState(); }
+    });
+
+    clearBtn.addEventListener('click', () => {
+      items = [];
+      renderChips();
+      drawWheel();
+      updateSpinState();
+    });
+
+    function spawnConfetti() {
+      for (let i = 0; i < 30; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'confetti-dot';
+        dot.style.background = COLORS[Math.floor(Math.random()*COLORS.length)];
+        
+        // Random angle in full 360 degrees
+        const angle = Math.random() * Math.PI * 2;
+        // Random distance 60-160px
+        const distance = 60 + Math.random() * 100;
+        const tx = Math.cos(angle) * distance;
+        const ty = Math.sin(angle) * distance;
+        const rot = Math.random() * 720;
+        
+        dot.style.setProperty('--tx', tx + 'px');
+        dot.style.setProperty('--ty', ty + 'px');
+        dot.style.setProperty('--rot', rot + 'deg');
+        dot.style.left = '50%';
+        dot.style.top = '50%';
+        dot.style.transform = 'translate(-50%, -50%)';
+        dot.style.width = (4 + Math.random() * 8) + 'px';
+        dot.style.height = dot.style.width;
+        dot.style.animationDuration = (1.2 + Math.random() * 0.6) + 's';
+        dot.style.animationDelay = Math.random()*0.1+'s';
+        resultArea.appendChild(dot);
+        setTimeout(() => dot.remove(), 2000);
+      }
+    }
+
+    spinBtn.addEventListener('click', () => {
+      if (spinning || items.length < 2) return;
+      spinning = true; updateSpinState();
+      const totalDeg = (5 + Math.random()*3)*360 + Math.random()*360;
+      currentRotation += totalDeg;
+      canvas.classList.add('spinning');
+      canvas.style.transform = `rotate(${currentRotation}deg)`;
+      setTimeout(() => {
+        canvas.classList.remove('spinning');
+        spinning = false; updateSpinState();
+        const normalizedRotation = (currentRotation % 360 + 360) % 360;
+        const topAngle = (270 - normalizedRotation + 360) % 360;
+        const segmentAngle = 360 / items.length;
+        const winIdx = Math.floor(topAngle / segmentAngle) % items.length;
+        document.querySelector('[data-template-id="result-value"]').textContent = items[winIdx];
+        resultArea.classList.remove('hidden');
+        resultArea.querySelector('[data-template-id="result-value"]').className = 'canva-text mt-2 result-reveal';
+        spawnConfetti();
+      }, 4100);
+    });
+
+    renderChips(); drawWheel(); updateSpinState();
+    lucide.createIcons();
+  </script>
+ 
+</body></html>
