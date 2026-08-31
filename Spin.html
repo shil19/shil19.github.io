@@ -141,7 +141,7 @@
       e.preventDefault();
       const input = document.getElementById('item-input');
       const val = input.value.trim();
-      if (val && items.length < 20) { items.push(val); input.value = ''; renderChips(); drawWheel(); updateSpinState(); }
+      if (val && items.length < 50) { items.push(val); input.value = ''; renderChips(); drawWheel(); updateSpinState(); }
     });
 
     clearBtn.addEventListener('click', () => {
