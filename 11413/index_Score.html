@@ -86,6 +86,8 @@ h3 { font-size: 20px; border-bottom: 1px solid #e8e8e8; padding-bottom: 5px; }
 
 const baseUrl =
 "https://script.google.com/macros/s/AKfycbwXYFJo_mTQ1mZ2cEY2Tg6BmNGVMeXft_ylvvLVu2llaUSyxElBwcilXPm98NM-XScF7Q/exec?sheet=基本資料&keyword="; // DocumentScoreQuery
+const baseUrl2 =
+"https://script.google.com/macros/s/AKfycbwXYFJo_mTQ1mZ2cEY2Tg6BmNGVMeXft_ylvvLVu2llaUSyxElBwcilXPm98NM-XScF7Q/exec?sheet=一下三段&keyword="; // DocumentScoreQuery
 //const baseUrl =
 "https://script.google.com/macros/s/AKfycbwXYFJo_mTQ1mZ2cEY2Tg6BmNGVMeXft_ylvvLVu2llaUSyxElBwcilXPm98NM-XScF7Q/exec?sheet=一下三段&keyword="; // DocumentScoreQuery
 //const baseUrl =
@@ -130,7 +132,7 @@ function search() {
             const targetValue = data[0][1]; 
             
             // 2. 重新組裝第二次請求的 URL
-            const secondUrl = `${baseUrl}${encodeURIComponent(targetValue)}`;
+            const secondUrl = `${baseUrl2}${encodeURIComponent(targetValue)}`;
             
             // 3. 回傳新的 fetch 請求，把控制權交給下一個 .then
             return fetch(secondUrl);
