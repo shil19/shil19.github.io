@@ -124,10 +124,28 @@ function search() {
 
     fetch(url)
         .then(response => response.json())
+        .then(data => {///
+            // 1. 從 data 中提取您需要的某個值 (這裡假設 data 是陣列，我們拿第一筆資料的某欄，或是 data 本身就是個物件)
+            // 範例：假設我們要拿回傳陣列中，第一列的第二個欄位值 (row[1])
+            const targetValue = data[0][1]; 
+            
+            // 2. 重新組裝第二次請求的 URL
+            const secondUrl = `${baseUrl}${encodeURIComponent(targetValue)}`;
+            
+            // 3. 回傳新的 fetch 請求，把控制權交給下一個 .then
+            return fetch(secondUrl);
+        })
+        .then(response => response.json()) // 解析第二次請求回傳的 JSON 資料
+        .then(secondData => {
+            // 4. 最後將第二次抓到的新資料丟給 showTable 渲染
+            showTable(secondData);
+        })
+      /*
         .then(data => {
             //showUl(data);
             showTable(data);
         })
+      */
         .catch(err => console.error(err));
 }
 
