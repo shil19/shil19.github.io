@@ -125,7 +125,7 @@ function search() {
     //    `${baseUrl}?sheet=工作表1&keyword=${encodeURIComponent(keyword)}`;
     const url =
         `${baseUrl}${encodeURIComponent(keyword)}`;
-/*
+/**/
     const payload = {
       sheet: "基本資料",
       keyword: ${encodeURIComponent(keyword)}
@@ -157,7 +157,8 @@ function search() {
         })
 //    .then(response => response.json())
 //    .then(data => console.log(data));
-*/
+/**/
+/*
     fetch(url)
         .then(response => response.json())
         .then(data => {///
@@ -176,6 +177,7 @@ function search() {
             // 4. 最後將第二次抓到的新資料丟給 showTable 渲染
             showTable(secondData);
         })
+*/
       /*
         .then(data => {
             //showUl(data);
