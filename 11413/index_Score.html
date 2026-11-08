@@ -123,7 +123,22 @@ function search() {
     //    `${baseUrl}?sheet=工作表1&keyword=${encodeURIComponent(keyword)}`;
     const url =
         `${baseUrl}${encodeURIComponent(keyword)}`;
+/*
+const payload = {
+  sheet: "二上一段",
+  keyword: "數學"
+};
 
+fetch('你的_GAS_WEB_APP_網址', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'text/plain' // 注意：GAS 對應用程式層級的請求，建議設為 text/plain 避免 CORS 預檢問題
+  },
+  body: JSON.stringify(payload) // 轉成 JSON 字串包在 Body 裡
+})
+.then(response => response.json())
+.then(data => console.log(data));
+*/
     fetch(url)
         .then(response => response.json())
         .then(data => {///
