@@ -121,9 +121,9 @@ function search() {
 
     const keyword = document.getElementById("keyword").value;
 
+    ///const url =
+    ///    `${baseUrl}?sheet=工作表1&keyword=${encodeURIComponent(keyword)}`;
     //const url =
-    //    `${baseUrl}?sheet=工作表1&keyword=${encodeURIComponent(keyword)}`;
-    const url =
         `${baseUrl}${encodeURIComponent(keyword)}`;
 /**/
     const payload = {
@@ -146,9 +146,21 @@ function search() {
             
             // 2. 重新組裝第二次請求的 URL
             const secondUrl = `${baseUrl2}${encodeURIComponent(targetValue)}`;
-            
+
+            const payload = {
+              sheet: "一下三段",
+              keyword: targetValue
+            };
+
             // 3. 回傳新的 fetch 請求，把控制權交給下一個 .then
-            return fetch(secondUrl);
+            //return fetch(secondUrl);
+            return fetch(baseUrl, {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'text/plain' // 注意：GAS 對應用程式層級的請求，建議設為 text/plain 避免 CORS 預檢問題
+                  },
+                  body: JSON.stringify(payload) // 轉成 JSON 字串包在 Body 裡
+                });
         })
         .then(response => response.json()) // 解析第二次請求回傳的 JSON 資料
         .then(secondData => {
