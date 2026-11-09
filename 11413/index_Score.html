@@ -159,9 +159,9 @@ function search() {
             const targetValue = data[0][1]; 
             
             // 2. 重新組裝第二次請求的 URL
-            const secondUrl = `${baseUrl2}${encodeURIComponent(targetValue)}`;
+            //const secondUrl = `${baseUrl2}${encodeURIComponent(targetValue)}`;
 
-            const payload = {
+            const payload2 = {
               sheet: "一下三段",
               keyword: targetValue
             };
@@ -173,7 +173,7 @@ function search() {
                   headers: {
                     'Content-Type': 'text/plain' // 注意：GAS 對應用程式層級的請求，建議設為 text/plain 避免 CORS 預檢問題
                   },
-                  body: JSON.stringify(payload) // 轉成 JSON 字串包在 Body 裡
+                  body: JSON.stringify(payload2) // 轉成 JSON 字串包在 Body 裡
                 })//;
         ///})
                 .then(response => response.json()) // 解析第二次請求回傳的 JSON 資料
