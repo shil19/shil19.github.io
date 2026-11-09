@@ -69,7 +69,7 @@ h3 { font-size: 20px; border-bottom: 1px solid #e8e8e8; padding-bottom: 5px; }
 
     <h1>成績查詢</h1>
     <!--<h2>林園高中提供給家長的檔案清單</h2>-->
-<h3><input id="keyword" placeholder="可輸入關鍵字搜尋">
+<h3><input id="keyword" placeholder="輸入學號">
 <input type="password" id="pwd" placeholder="輸入密碼">
 <button onclick="search()">搜尋</button></h3>
 <!--
@@ -148,10 +148,10 @@ function search() {
         })
         .then(data => {
           // 💡 修正：防呆機制。檢查有沒有查到資料，避免 data[0] 崩潰
-          if (!data || data.length === 0) {
-            alert("查無相關基本資料！");
-            return; // 中斷後續的 Promise 鏈
-          }
+            if (!data || data.length === 0) {
+              alert("查無相關基本資料！");
+              return; // 中斷後續的 Promise 鏈
+            }
         //.then(response => response.json())
         //.then(data => {///
             // 1. 從 data 中提取您需要的某個值 (這裡假設 data 是陣列，我們拿第一筆資料的某欄，或是 data 本身就是個物件)
@@ -174,13 +174,13 @@ function search() {
                     'Content-Type': 'text/plain' // 注意：GAS 對應用程式層級的請求，建議設為 text/plain 避免 CORS 預檢問題
                   },
                   body: JSON.stringify(payload) // 轉成 JSON 字串包在 Body 裡
-                });
-        })
-        .then(response => response.json()) // 解析第二次請求回傳的 JSON 資料
-        .then(secondData => {
+                })//;
+        ///})
+                .then(response => response.json()) // 解析第二次請求回傳的 JSON 資料
+                .then(secondData => {
             // 4. 最後將第二次抓到的新資料丟給 showTable 渲染
-            showTable(secondData);
-        })
+                  showTable(secondData);
+                })
 //    .then(response => response.json())
 //    .then(data => console.log(data));
 /**/
