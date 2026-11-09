@@ -1,0 +1,26 @@
+<style>
+/* 讓表格啟動彈性佈局 */
+table {
+  display: flex;
+  flex-direction: row; /* 讓每一列 (tr) 橫向並排 */
+  overflow-x: auto;    /* 如果資料太多，自動啟動橫向滾動條 */
+}
+
+/* 讓 tr 變成直向排列 */
+table tr {
+  display: flex;
+  flex-direction: column; /* 讓儲存格 (th, td) 在 tr 內由上往下排 */
+  flex-shrink: 0;         /* 防止欄寬被擠壓變形 */
+}
+
+/* 調整標題與資料格的寬度與對齊 */
+table th, table td {
+  display: block;        /* 區塊化以利控制寬高 */
+  width: 120px;          /* 統一直向每欄的寬度 (可自由調整) */
+  box-sizing: border-box;
+}
+</style>
+
+
+<tr><th>中文</th><th>中文2</th><th>中文3</th></tr>
+<tr><td>1</td><td>2</td><td>3</td></tr>
