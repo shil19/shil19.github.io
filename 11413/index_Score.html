@@ -63,6 +63,7 @@ h3 { font-size: 20px; border-bottom: 1px solid #e8e8e8; padding-bottom: 5px; }
       th { background-color: #f2f2f2; }
     </style>
     -->
+<!--
 <style>
 /* 讓表格啟動彈性佈局 */
 table {
@@ -83,6 +84,41 @@ table th, table td {
   display: block;        /* 區塊化以利控制寬高 */
   width: 120px;          /* 統一直向每欄的寬度 (可自由調整) */
   box-sizing: border-box;
+}
+</style>
+-->
+<style>
+table {
+    display: flex;
+    flex-direction: row;
+    width: max-content;
+    overflow-x: auto;
+}
+
+tbody {
+    display: flex;
+    flex-direction: row;
+}
+
+tr {
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 120px;
+}
+
+th, td {
+    display: flex;
+    width: 120px;
+    height: 45px;
+    box-sizing: border-box;
+    border: 1px solid #999;
+    align-items: center;
+    justify-content: center;
+}
+
+th {
+    background: #4CAF50;
+    color: white;
 }
 </style>
 
