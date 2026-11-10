@@ -208,7 +208,7 @@ function search() {
         .then(data => {
           // 💡 修正：防呆機制。檢查有沒有查到資料，避免 data[0] 崩潰
             ///if (!data || data.length === 0) {
-            if (!data || data.length ！= 2) {
+            if (!data || data.length ！== 2) {
               alert(data);//alert("查無相關基本資料！");
               return; // 中斷後續的 Promise 鏈
             }
