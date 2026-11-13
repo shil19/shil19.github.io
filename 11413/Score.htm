@@ -1,1 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
 
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScoreQuery</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown.min.css">
+    <!--<style>
+        /* 2. 設定網頁的寬度與留白 */
+        .markdown-body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 850px; /* 限制寬度，閱讀最舒適 */
+            margin: 0 auto;   /* 讓內容水平置中 */
+            padding: 45px;    /* 四周留白 */
+        }
+        
+h1, h2, h3 {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    
+    /* 關鍵：Jekyll 的優雅來自於大標題其實「不粗」，而是靠字體大小撐出層次 */
+    font-weight: 700 !important; 
+    
+    color: #333333; /*#111111;*/
+    
+    /* 關鍵：微調字距，讓大字體看起來更緊實高級 */
+    letter-spacing: -1px; 
+    
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+h1 { font-size: 32px; border-bottom: 1px solid #e8e8e8; padding-bottom: 10px; }
+h2 { font-size: 28px; border-bottom: 1px solid #e8e8e8; padding-bottom: 10px; }
+h3 { font-size: 20px; border-bottom: 1px solid #e8e8e8; padding-bottom: 5px; }
+        
+        /* 2. 清單樣式調整：不要點點、文字直接靠左 */
+        ul, ol {
+            list-style-type: none;  /* 移除預設的圓點與數字 */
+            padding-left: 0 !important;        /* 拔掉左側縮進，讓文字完美靠左對齊 */
+            margin: 20px 0;
+        }
+
+        li {
+            margin-bottom: 18px;    /* 清單項目之間也加寬，呼應大行距的視覺感 */
+        }
+.file-list{
+    border-left:4px solid #d0d7de;
+    padding-left:18px;
+}
+
+        /* 手機版自動縮小留白 */
+        @media (max-width: 767px) {
+            .markdown-body { padding: 15px; }
+        }
+    </style>-->
+    <!--
+    <base target="_top">
+    <style>
+      table { border-collapse: collapse; width: 100%; max-width: 500px; }
+      th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+      th { background-color: #f2f2f2; }
+    </style>
+    -->
+<!--
+<style>
+body {
+    text-align: center;
+}
+/* 讓表格啟動彈性佈局 */
+table {
+  display: flex;
+  flex-direction: row; /* 讓每一列 (tr) 橫向並排 */
+  overflow-x: auto;    /* 如果資料太多，自動啟動橫向滾動條 */
+}
+
+/* 讓 tr 變成直向排列 */
+table tr {
+  display: flex;
+  flex-direction: column; /* 讓儲存格 (th, td) 在 tr 內由上往下排 */
+  flex-shrink: 0;         /* 防止欄寬被擠壓變形 */
+}
+
+/* 調整標題與資料格的寬度與對齊 */
+table th, table td {
+  display: block;        /* 區塊化以利控制寬高 */
+  width: 120px;          /* 統一直向每欄的寬度 (可自由調整) */
+  box-sizing: border-box;
+}
+</style>
+-->
+<style>
+table {
+    display: flex;
+    flex-direction: row;
+    width: max-content;
+    overflow-x: auto;
+}
+
+tbody {
+    display: flex;
+    flex-direction: row;
+}
+
+tr {
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 120px;
+}
+
+th, td {
+    display: flex;
+    width: 120px;
+    height: 45px;
+    box-sizing: border-box;
+    border: 1px solid #999;
+    align-items: center;
+    justify-content: center;
+}
+
+th {
+    background: #4CAF50;
+    color: white;
+}
+</style>
+
+  </head>
+  <body class="markdown-body">
+
+
+    <h1>成績查詢系統</h1>
+    <!--<h2>林園高中提供給家長的檔案清單</h2>-->
+<h3><input id="keyword" placeholder="輸入學號">
+<input type="password" id="pwd" placeholder="輸入密碼">
+<button onclick="search()">搜尋</button></h3>
+<!--
+<h3><input id="keyword" placeholder="可輸入關鍵字搜尋">
+<button onclick="search()">搜尋</button></h3>
+-->
+<div id="result">
+等待輸入中...<!--讀取中...-->
+</div>
+<!--
+<table><tr><th>測試</th></tr><tr><td>測試</td></tr></table>
+-->
+    
+  </body>
+</html>
+<script>
+
+const baseUrl =
+"https://script.google.com/macros/s/AKfycbwXYFJo_mTQ1mZ2cEY2Tg6BmNGVMeXft_ylvvLVu2llaUSyxElBwcilXPm98NM-XScF7Q/exec"; // DocumentScoreQuery
+/*
+//const baseUrl =
+"https://script.google.com/macros/s/AKfycbwXYFJo_mTQ1mZ2cEY2Tg6BmNGVMeXft_ylvvLVu2llaUSyxElBwcilXPm98NM-XScF7Q/exec?sheet=基本資料&keyword="; // DocumentScoreQuery
+const baseUrl2 =
+"https://script.google.com/macros/s/AKfycbwXYFJo_mTQ1mZ2cEY2Tg6BmNGVMeXft_ylvvLVu2llaUSyxElBwcilXPm98NM-XScF7Q/exec?sheet=一下三段&keyword="; // DocumentScoreQuery
+//const baseUrl =
+"https://script.google.com/macros/s/AKfycbwXYFJo_mTQ1mZ2cEY2Tg6BmNGVMeXft_ylvvLVu2llaUSyxElBwcilXPm98NM-XScF7Q/exec?sheet=一下三段&keyword="; // DocumentScoreQuery
+//const baseUrl =
+"https://script.google.com/a/macros/scjh.kh.edu.tw/s/AKfycbxkdpuUhMvHOHiKxO8TM9f60mnaiXN945OAi3iFZgAPxDXZneNbfoECl1lAnqmQFgT4/exec?sheet=工作表1&keyword="; // DocumentsJSON
+//const url =
+//"https://script.google.com/a/macros/scjh.kh.edu.tw/s/AKfycbx-vj-k0emXu0pAHjDlHYVhmtx6efngrFYBgItK9OAK4XEZ_XGIxuCg4CR2a2KaxE4o/exec?sheet=工作表1";
+//const url =
+//"https://script.google.com/a/macros/scjh.kh.edu.tw/s/AKfycbx-vj-k0emXu0pAHjDlHYVhmtx6efngrFYBgItK9OAK4XEZ_XGIxuCg4CR2a2KaxE4o/exec?sheet=一下三段";
+/*
+fetch(baseUrl)
+.then(response => response.json())
+.then(data => {
+
+    console.log(data);
+
+    showUl(data);
+    //showTable(data);
+
+})
+.catch(error => {
+    console.error(error);
+});
+*/
+
+//const baseUrl =
+"https://script.google.com/a/macros/scjh.kh.edu.tw/s/AKfycbxkdpuUhMvHOHiKxO8TM9f60mnaiXN945OAi3iFZgAPxDXZneNbfoECl1lAnqmQFgT4/exec";
+
+function search() {
+
+    const keyword = document.getElementById("keyword").value;
+
+    ///const url =
+    ///    `${baseUrl}?sheet=工作表1&keyword=${encodeURIComponent(keyword)}`;
+    //const url =
+        `${baseUrl}${encodeURIComponent(keyword)}`;
+/**/
+    const payload = {
+      sheet: "基本資料",
+      keyword: keyword
+    };
+
+    fetch(baseUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'text/plain' // 注意：GAS 對應用程式層級的請求，建議設為 text/plain 避免 CORS 預檢問題
+      },
+      body: JSON.stringify(payload) // 轉成 JSON 字串包在 Body 裡
+    })
+        .then(response => {
+          if (!response.ok) throw new Error('第一次請求失敗');
+          return response.json();
+        })
+        .then(data => {
+          // 💡 修正：防呆機制。檢查有沒有查到資料，避免 data[0] 崩潰
+            ///if (!data || data.length === 0) {
+            if (!data || data.length !== 2) {
+              alert("查無相關基本資料！");//alert(data);//
+              return; // 中斷後續的 Promise 鏈
+            }
+        ///.then(response => response.json())
+        ///.then(data => {///
+            // 1. 從 data 中提取您需要的某個值 (這裡假設 data 是陣列，我們拿第一筆資料的某欄，或是 data 本身就是個物件)
+            // 範例：假設我們要拿回傳陣列中，第一列的第二個欄位值 (row[1])
+            ///const targetValue = data[0][1]; 
+            const targetValue = data[1][1]; 
+            
+            // 2. 重新組裝第二次請求的 URL
+            //const secondUrl = `${baseUrl2}${encodeURIComponent(targetValue)}`;
+/*
+            const payload2 = {
+              sheet: "一下三段",
+              keyword: targetValue
+            };
+*/
+            const payload2 = {
+              sheet: "二上一段",
+              keyword: targetValue
+            };
+
+            // 3. 回傳新的 fetch 請求，把控制權交給下一個 .then
+            //return fetch(secondUrl);
+            return fetch(baseUrl, {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'text/plain' // 注意：GAS 對應用程式層級的請求，建議設為 text/plain 避免 CORS 預檢問題
+                  },
+                  body: JSON.stringify(payload2) // 轉成 JSON 字串包在 Body 裡
+                })//;
+        ///})
+                .then(response => response.json()) // 解析第二次請求回傳的 JSON 資料
+                .then(secondData => {
+            // 4. 最後將第二次抓到的新資料丟給 showTable 渲染
+                  showTable(secondData);
+                });//
+        })
+//    .then(response => response.json())
+//    .then(data => console.log(data));
+/**/
+/*
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {///
+            // 1. 從 data 中提取您需要的某個值 (這裡假設 data 是陣列，我們拿第一筆資料的某欄，或是 data 本身就是個物件)
+            // 範例：假設我們要拿回傳陣列中，第一列的第二個欄位值 (row[1])
+            const targetValue = data[0][1]; 
+            
+            // 2. 重新組裝第二次請求的 URL
+            const secondUrl = `${baseUrl2}${encodeURIComponent(targetValue)}`;
+            
+            // 3. 回傳新的 fetch 請求，把控制權交給下一個 .then
+            return fetch(secondUrl);
+        })
+        .then(response => response.json()) // 解析第二次請求回傳的 JSON 資料
+        .then(secondData => {
+            // 4. 最後將第二次抓到的新資料丟給 showTable 渲染
+            showTable(secondData);
+        })
+*/
+      /*
+        .then(data => {
+            //showUl(data);
+            showTable(data);
+        })
+      */
+        .catch(err => console.error(err));
+}
+
+//search();
+
+function showTable(data){
+
+    let html = "<table>";
+
+    data.forEach((row,index)=>{
+
+        html += "<tr>";
+
+        row.forEach(cell=>{
+
+            if(index==0){
+                html += "<th>" + cell + "</th>";
+            }
+            else{
+                html += "<td>" + cell + "</td>";
+            }
+
+        });
+
+        html += "</tr>";
+
+    });
+
+
+    html += "</table>";
+
+    document.getElementById("result").innerHTML = html;
+
+}
+
+function showUl(data) {
+
+    const html = data
+        .slice()
+        .reverse()
+        .map(row => `
+            <li>
+                <a href="${row[1]}" target="_blank" rel="noopener">
+                    ${row[0]}
+                </a>
+            </li>
+        `)
+        .join("");
+
+    document.getElementById("result").innerHTML =
+        `<div class="file-list"><ul>${html}</ul></div>`;
+}
+
+function showUl_(data){
+
+    let html = "<blockquote><ul>";
+
+    data.reverse().forEach((row,index)=>{
+
+        html += "<li>";
+
+        //if(index<data.length){//if(index<data.length-1){
+            //html += "<li><a href=" + row[1] + ">" + row[0] + "</a></li>";// + html;//
+        html += "<a href=" + row[1] + ">" + row[0] + "</a>";
+        //}
+/*
+        if(index==0){
+            //html += "<a href=" + row[1] + ">" + row[0] + "</a>";
+        }
+        else{
+            html += "<a href=" + row[1] + ">" + row[0] + "</a>";
+        }
+*/
+        html += "</li>";
+
+    });
+
+
+    html += "</ul></blockquote>";
+
+    document.getElementById("result").innerHTML = html;
+
+}
+
+document.getElementById("keyword").addEventListener("keydown", function (event) {
+
+    if (event.key === "Enter") {
+        search();
+    }
+
+});
+</script>
+
+
+<!--
+function showTable(data){
+
+let html="<table>";
+
+data.forEach((row,index)=>{
+
+html+="<tr>";
+
+row.forEach((cell,col)=>{
+
+if(index==0){
+
+html+="<th>"+cell+"</th>";
+
+}
+else if(col==1){
+
+html+="<td><a href='"+cell+"' target='_blank'>開啟</a></td>";
+
+}
+else{
+
+html+="<td>"+cell+"</td>";
+
+}
+
+});
+
+html+="</tr>";
+
+});
+
+html+="</table>";
+
+document.getElementById("result").innerHTML=html;
+
+}
+-->
