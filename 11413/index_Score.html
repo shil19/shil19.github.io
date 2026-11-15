@@ -126,7 +126,7 @@ th, td {
 }
 
 th {
-    background: #4CAF50;
+    background: #87CEFA;
     color: white;
 }
 </style>
@@ -204,7 +204,7 @@ function search() {
       keyword: keyword,
       passwd:passwd
     };
-    alert("準備送出的資料：\n" + JSON.stringify(payload));//
+    ///alert("準備送出的資料：\n" + JSON.stringify(payload));//
 
     fetch(baseUrl, {
       method: 'POST',
@@ -244,7 +244,7 @@ function search() {
               sheet: "二上一段",
               keyword: targetValue
             };
-            alert("準備送出的資料：\n" + JSON.stringify(payload2));//
+            ///alert("準備送出的資料：\n" + JSON.stringify(payload2));//
 /**/
             // 3. 回傳新的 fetch 請求，把控制權交給下一個 .then
             //return fetch(secondUrl);
