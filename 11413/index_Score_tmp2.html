@@ -91,11 +91,17 @@ table th, table td {
 </style>
 -->
 <style>
+/*
+body {
+    text-align: center;
+}
+*/  
 table {
     display: flex;
     flex-direction: row;
     width: max-content;
     overflow-x: auto;
+    margin: 0 auto;
 }
 
 tbody {
@@ -120,7 +126,7 @@ th, td {
 }
 
 th {
-    background: #4CAF50;
+    background: #87CEFA;
     color: white;
 }
 </style>
@@ -132,7 +138,7 @@ th {
     <h1>成績查詢系統</h1>
     <!--<h2>林園高中提供給家長的檔案清單</h2>-->
 <h3><input id="keyword" placeholder="輸入學號">
-<input type="password" id="pwd" placeholder="輸入密碼">
+<input type="password" id="passwd" placeholder="輸入密碼">
 <button onclick="search()">搜尋</button></h3>
 <!--
 <h3><input id="keyword" placeholder="可輸入關鍵字搜尋">
@@ -186,6 +192,7 @@ fetch(baseUrl)
 function search() {
 
     const keyword = document.getElementById("keyword").value;
+    const passwd = document.getElementById("passwd").value;
 
     ///const url =
     ///    `${baseUrl}?sheet=工作表1&keyword=${encodeURIComponent(keyword)}`;
@@ -194,8 +201,10 @@ function search() {
 /**/
     const payload = {
       sheet: "基本資料",
-      keyword: keyword
+      keyword: keyword,
+      passwd:passwd
     };
+    ///alert("準備送出的資料：\n" + JSON.stringify(payload));//
 
     fetch(baseUrl, {
       method: 'POST',
@@ -228,13 +237,15 @@ function search() {
             const payload2 = {
               sheet: "一下三段",
               keyword: targetValue
+              passwd:
             };
-*/
+/**/
             const payload2 = {
               sheet: "二上一段",
               keyword: targetValue
             };
-
+            ///alert("準備送出的資料：\n" + JSON.stringify(payload2));//
+/**/
             // 3. 回傳新的 fetch 請求，把控制權交給下一個 .then
             //return fetch(secondUrl);
             return fetch(baseUrl, {
