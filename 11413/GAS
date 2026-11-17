@@ -27,16 +27,49 @@ function doPost(e) {
         }))
         .setMimeType(ContentService.MimeType.JSON);
     }
-  // ---- 這裡放你原本的試算表搜尋邏輯 ----
+
 /*
     const data = sheet
       .getDataRange()
       .getValues();
 */
     var data;
-
+    var target;
     var results = [];
-  
+
+    data = sheets[0]
+      .getDataRange()
+      .getValues();
+    //results.push(data[0]);
+    //迴圈走訪每一列資料（略過第一列標題列）
+    ///for (var i = 0; i < data.length; i++) {
+    for (var i = 1; i < data.length; i++) {
+      var row = data[i];
+      if (row && String(row[0]).toLowerCase() === String(keyword).toLowerCase() && String(row[2]) === String(passwd)) {// && String(row[2]).toLowerCase() === passwd.toLowerCase()) {// 
+        target=row[1];
+        //results.push(row); // 找到符合的列加入結果
+        break; // 跳離迴圈，不再往下找
+      }
+    }
+
+    data = sheets[sheets.length-1]
+      .getDataRange()
+      .getValues();
+    results.push(data[0]);
+    //迴圈走訪每一列資料（略過第一列標題列）
+    ///for (var i = 0; i < data.length; i++) {
+    for (var i = 1; i < data.length; i++) {
+      var row = data[i];
+      if (row && String(row[1]).toLowerCase() === String(keyword).toLowerCase()) {
+        results.push(row); // 找到符合的列加入結果
+        break; // 跳離迴圈，不再往下找
+      }
+    }
+/*    if(passwd == '') {
+    }
+    else {
+    }
+/*
     if(passwd == '') {
           data = sheets[sheets.length-1]
             .getDataRange()
@@ -67,6 +100,7 @@ function doPost(e) {
             }
           }
     }
+*/
     return ContentService
       .createTextOutput(JSON.stringify(results))
       .setMimeType(ContentService.MimeType.JSON);
