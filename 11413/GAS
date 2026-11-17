@@ -1,0 +1,83 @@
+function doPost(e) {
+  try {
+    //const id = '16w4ipTwgeK87TOkYXsgWaeMyXN3V0MENBY85laxNQpw'; //14113
+    const id = '1ImULHyFzaTvpwPrZ1qqMuu34v74b6iVPv9vgJ14Zlys'; //14113_2
+
+    // 1. 檢查是否有 postData
+    if (!e.postData || !e.postData.contents) {
+      return ContentService.createTextOutput("無資料傳入").setMimeType(ContentService.MimeType.TEXT);
+    }
+
+    // 2. 將 JSON 字串解析為 JavaScript 物件
+    const pData = JSON.parse(e.postData.contents);
+
+    // 3. 讀取參數，並同樣加上「預設值」機制
+    //const sheetName = pData.sheet || '二上一段';
+    const keyword = pData.keyword || '';
+    const passwd = pData.passwd || '';
+
+    const sheets = SpreadsheetApp
+      .openById(id)
+      .getSheets();//.getSheetByName(sheetName);
+
+    if (sheets.length < 1) {//if (!sheet) {
+      return ContentService
+        .createTextOutput(JSON.stringify({
+          error: "找不到工作表：" + sheetName
+        }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+  // ---- 這裡放你原本的試算表搜尋邏輯 ----
+/*
+    const data = sheet
+      .getDataRange()
+      .getValues();
+*/
+    var data;
+
+    var results = [];
+  
+    if(passwd == '') {
+          data = sheets[sheets.length-1]
+            .getDataRange()
+            .getValues();
+          results.push(data[0]);///
+          //迴圈走訪每一列資料（略過第一列標題列 i=1）
+          ///for (var i = 0; i < data.length; i++) {
+          for (var i = 1; i < data.length; i++) {
+            var row = data[i];
+            if (row && String(row[1]).toLowerCase() === String(keyword).toLowerCase()) {
+              results.push(row); // 找到符合的列加入結果
+              break; // 跳離迴圈，不再往下找
+            }
+          }
+    }
+    else {
+          data = sheets[0]
+            .getDataRange()
+            .getValues();
+          results.push(data[0]);///
+          //迴圈走訪每一列資料（略過第一列標題列 i=1）
+          ///for (var i = 0; i < data.length; i++) {
+          for (var i = 1; i < data.length; i++) {
+            var row = data[i];
+            if (row && String(row[0]).toLowerCase() === String(keyword).toLowerCase() && String(row[2]) === String(passwd)) {// && String(row[2]).toLowerCase() === passwd.toLowerCase()) {// 
+              results.push(row); // 找到符合的列加入結果
+              break; // 跳離迴圈，不再往下找
+            }
+          }
+    }
+    return ContentService
+      .createTextOutput(JSON.stringify(results))
+      .setMimeType(ContentService.MimeType.JSON);
+  
+  } catch(err) {
+
+    return ContentService
+      .createTextOutput(JSON.stringify({
+        error: err.message
+      }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
