@@ -172,9 +172,6 @@ fetch(baseUrl)
 });
 */
 
-//const baseUrl =
-"https://script.google.com/a/macros/scjh.kh.edu.tw/s/AKfycbxkdpuUhMvHOHiKxO8TM9f60mnaiXN945OAi3iFZgAPxDXZneNbfoECl1lAnqmQFgT4/exec";
-
 function search() {
 
     const keyword = document.getElementById("keyword").value;
@@ -182,8 +179,6 @@ function search() {
 
     ///const url =
     ///    `${baseUrl}?sheet=工作表1&keyword=${encodeURIComponent(keyword)}`;
-    //const url =
-        `${baseUrl}${encodeURIComponent(keyword)}`;
 /**/
     const payload = {
       sheet: "基本資料",
@@ -219,12 +214,6 @@ function search() {
             
             // 2. 重新組裝第二次請求的 URL
             //const secondUrl = `${baseUrl2}${encodeURIComponent(targetValue)}`;
-/*
-            const payload2 = {
-              sheet: "一下三段",
-              keyword: targetValue
-              passwd:
-            };
 /**/
             const payload2 = {
               sheet: "二上一段",
