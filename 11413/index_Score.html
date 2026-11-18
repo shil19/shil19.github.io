@@ -59,7 +59,7 @@ th {
 <button onclick="search()">查詢</button></h3>
 
 <div id="result">
-等待輸入中...<!--讀取中...-->
+等待輸入中......<!--讀取中...-->
 </div>
     
   </body>
@@ -78,7 +78,6 @@ function search() {
     const keyword = document.getElementById("keyword").value;
     const passwd = document.getElementById("passwd").value;
 
-/**/
     const payload = {
       keyword: keyword,
       passwd:passwd
@@ -93,7 +92,7 @@ function search() {
       body: JSON.stringify(payload) // 轉成 JSON 字串包在 Body 裡
     })
         .then(response => {
-          if (!response.ok) throw new Error('第一次請求失敗');
+          if (!response.ok) throw new Error('請求失敗！');
           return response.json();
         })
         .then(data => {
