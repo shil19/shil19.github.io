@@ -62,7 +62,7 @@ th {
 <button onclick="search()">搜尋</button></h3>
 -->
 <div id="result">
-等待輸入中......<!--讀取中...-->
+等待輸入中...<!--讀取中...-->
 </div>
     
   </body>
@@ -247,44 +247,3 @@ document.getElementById("keyword").addEventListener("keydown", function (event) 
 
 });
 </script>
-
-
-<!--
-function showTable(data){
-
-let html="<table>";
-
-data.forEach((row,index)=>{
-
-html+="<tr>";
-
-row.forEach((cell,col)=>{
-
-if(index==0){
-
-html+="<th>"+cell+"</th>";
-
-}
-else if(col==1){
-
-html+="<td><a href='"+cell+"' target='_blank'>開啟</a></td>";
-
-}
-else{
-
-html+="<td>"+cell+"</td>";
-
-}
-
-});
-
-html+="</tr>";
-
-});
-
-html+="</table>";
-
-document.getElementById("result").innerHTML=html;
-
-}
--->
