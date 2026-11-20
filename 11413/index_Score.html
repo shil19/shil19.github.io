@@ -204,7 +204,7 @@ function showTable(data){
                 html += "<th>" + cell + "</th>";
             }
             else{
-                html += "<td>" + cell + "</td>";
+                html += "<td>" + formatNumber(cell) + "</td>";
             }
 
         });
@@ -219,7 +219,17 @@ function showTable(data){
     document.getElementById("result").innerHTML = html;
 
 }
-  //取小數第二位 Number().toFixed(2)
+  //取小數第二位 Number().toFixed(2) 或 function formatNumber(val)
+  //
+function formatNumber(val) {
+  const num = Number(val);
+  // 若不是有效數字（例如文字或空值），直接回傳原值
+  if (isNaN(num) || val === "" || val === null) return val;
+  
+  // 如果是整數，直接回傳；有小數點則四捨五入到小數第二位（不補多餘的 0）
+  return Number.isInteger(num) ? num : Math.round(num * 100) / 100;
+}
+  //
 
 function showUl(data) {
 
