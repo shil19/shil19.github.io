@@ -279,7 +279,7 @@ function showUl_(data){
     document.getElementById("result").innerHTML = html;
 
 }
-
+/*
 document.getElementById("keyword").addEventListener("keydown", function (event) {
 
     if (event.key === "Enter") {
@@ -287,4 +287,21 @@ document.getElementById("keyword").addEventListener("keydown", function (event) 
     }
 
 });
+
+*/
+// 當在第一個輸入框按下 Enter
+document.getElementById("keyword").addEventListener("keydown", function (event) {
+    if (event.key === "Enter" && !event.isComposing) {
+        event.preventDefault(); // 防止表單意外送出或換行
+        document.getElementById("passwd").focus(); // 游標跳至 id 為 keyword 的輸入框
+    }
+});
+
+// 當在第二個輸入框按下 Enter，才執行搜尋
+document.getElementById("passwd").addEventListener("keydown", function (event) {
+    if (event.key === "Enter" && !event.isComposing) {
+        search();
+    }
+});
+
 </script>
