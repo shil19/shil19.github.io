@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScoreQuery</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown.min.css">
+<style>
+/*
+body {
+    text-align: center;
+}
+*/  
+table {
+    display: flex;
+    flex-direction: row;
+    width: max-content;
+    overflow-x: auto;
+    margin: 0 auto;
+}
+
+tbody {
+    display: flex;
+    flex-direction: row;
+}
+
+tr {
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 120px;
+}
+
+th, td {
+    display: flex;
+    width: 120px;
+    height: 45px;
+    box-sizing: border-box;
+    border: 1px solid #999;
+    align-items: center;
+    justify-content: center;
+}
+
+th {
+    background: #87CEFA;
+    color: white;
+}
+</style>
+
+  </head>
+  <body class="markdown-body">
+
+
+    <h1>成績查詢系統</h1>
+    <!--<h2>成績查詢系統</h2>-->
+<h3><input id="keyword" placeholder="輸入學號">
+<input type="password" id="passwd" placeholder="輸入密碼">
+<button id="query" onclick="search()">查詢</button></h3>
+
+<div id="result">
+等待輸入中......<!--讀取中...-->
+</div>
+    
+  </body>
+</html>
+<script>
+
+const baseUrl =
+"https://script.google.com/macros/s/AKfycbwagoQY9XVYhzoB9XmQtf-Wgu5YBR8ol-fRNxD0HwdipsMj0GBtHQ-wetYrLh8RPVCZ/exec"; // ScoreQuery_tmp < DocumentScoreQuery
+//const baseUrl =
+"https://script.google.com/macros/s/AKfycbwagoQY9XVYhzoB9XmQtf-Wgu5YBR8ol-fRNxD0HwdipsMj0GBtHQ-wetYrLh8RPVCZ/exec"; // ScoreQuery_tmp < DocumentScoreQuery
+//const baseUrl =
+"https://script.google.com/macros/s/AKfycbwXYFJo_mTQ1mZ2cEY2Tg6BmNGVMeXft_ylvvLVu2llaUSyxElBwcilXPm98NM-XScF7Q/exec"; // DocumentScoreQuery
+
+function search() {
+
+    const keyword = document.getElementById("keyword").value;
+    const passwd = document.getElementById("passwd").value;
+
+    const payload = {
+      keyword: keyword,
+      passwd:passwd
+    };
+    ///alert("準備送出的資料：\n" + JSON.stringify(payload));//
+
+    fetch(baseUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'text/plain' // 注意：GAS 對應用程式層級的請求，建議設為 text/plain 避免 CORS 預檢問題
+      },
+      body: JSON.stringify(payload) // 轉成 JSON 字串包在 Body 裡
+    })
+        .then(response => {
+          if (!response.ok) throw new Error('請求失敗！');
+          return response.json();
+        })
+        .then(data => {
+          // 💡 修正：防呆機制。檢查有沒有查到資料，避免 data[0] 崩潰
+            ///if (!data || data.length === 0) {
+            if (!data || data.length !== 2) {
+              alert("查無相關基本資料！");//alert(data);//
+              return; // 中斷後續的 Promise 鏈
+            }
+            showTable(data);
+        ///});//
+/*            // 從 data 中提取您需要的某個值 (這裡假設 data 是陣列，我們拿第一筆資料的某欄，或是 data 本身就是個物件)
+            // 範例：假設我們要拿回傳陣列中，第一列的第二個欄位值 
+            ///const targetValue = data[0][1]; 
+            const targetValue = data[1][1]; 
+            
+//
+            const payload2 = {
+              //sheet: "二上一段",
+              keyword: targetValue
+            };
+            ///alert("準備送出的資料：\n" + JSON.stringify(payload2));//
+//
+            // 回傳新的 fetch 請求，把控制權交給下一個 .then
+            return fetch(baseUrl, {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'text/plain' // 注意：GAS 對應用程式層級的請求，建議設為 text/plain 避免 CORS 預檢問題
+                  },
+                  body: JSON.stringify(payload2) // 轉成 JSON 字串包在 Body 裡
+                })//;
+                .then(response => response.json()) // 解析第二次請求回傳的 JSON 資料
+                .then(secondData => {
+            // 最後將第二次抓到的新資料丟給 showTable 渲染
+                  showTable(secondData);
+                });*/
+        })
+        .catch(err => console.error(err));
+/*
+    const payload = {
+      //sheet: "基本資料",
+      keyword: keyword,
+      passwd:passwd
+    };
+    ///alert("準備送出的資料：\n" + JSON.stringify(payload));//
+
+    fetch(baseUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'text/plain' // 注意：GAS 對應用程式層級的請求，建議設為 text/plain 避免 CORS 預檢問題
+      },
+      body: JSON.stringify(payload) // 轉成 JSON 字串包在 Body 裡
+    })
+        .then(response => {
+          if (!response.ok) throw new Error('第一次請求失敗');
+          return response.json();
+        })
+        .then(data => {
+          // 💡 修正：防呆機制。檢查有沒有查到資料，避免 data[0] 崩潰
+            ///if (!data || data.length === 0) {
+            if (!data || data.length !== 2) {
+              alert("查無相關基本資料！");//alert(data);//
+              return; // 中斷後續的 Promise 鏈
+            }
+            // 從 data 中提取您需要的某個值 (這裡假設 data 是陣列，我們拿第一筆資料的某欄，或是 data 本身就是個物件)
+            // 範例：假設我們要拿回傳陣列中，第一列的第二個欄位值 
+            ///const targetValue = data[0][1]; 
+            const targetValue = data[1][1]; 
+            
+//
+            const payload2 = {
+              //sheet: "二上一段",
+              keyword: targetValue
+            };
+            ///alert("準備送出的資料：\n" + JSON.stringify(payload2));//
+//
+            // 回傳新的 fetch 請求，把控制權交給下一個 .then
+            return fetch(baseUrl, {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'text/plain' // 注意：GAS 對應用程式層級的請求，建議設為 text/plain 避免 CORS 預檢問題
+                  },
+                  body: JSON.stringify(payload2) // 轉成 JSON 字串包在 Body 裡
+                })//;
+                .then(response => response.json()) // 解析第二次請求回傳的 JSON 資料
+                .then(secondData => {
+            // 最後將第二次抓到的新資料丟給 showTable 渲染
+                  showTable(secondData);
+                });//
+        })
+//
+        .catch(err => console.error(err));
+*/
+}
+
+//search();
+
+function showTable(data){
+
+    let html = "<table>";
+
+    data.forEach((row,index)=>{
+
+        html += "<tr>";
+
+        row.forEach(cell=>{
+
+            if(index==0){
+                html += "<th>" + cell + "</th>";
+            }
+            else{
+                html += "<td>" + formatNumber(cell) + "</td>";
+            }
+
+        });
+
+        html += "</tr>";
+
+    });
+
+
+    html += "</table>";
+
+    document.getElementById("result").innerHTML = html;
+
+}
+  //取小數第二位 Number().toFixed(2) 或 function formatNumber(val)
+  //
+function formatNumber(val) {
+  const num = Number(val);
+  // 若不是有效數字（例如文字或空值），直接回傳原值
+  if (isNaN(num) || val === "" || val === null) return val;
+  
+  // 如果是整數，直接回傳；有小數點則四捨五入到小數第二位（不補多餘的 0）
+  return Number.isInteger(num) ? num : Math.round(num * 100) / 100;
+}
+  //
+
+function showUl(data) {
+
+    const html = data
+        .slice()
+        .reverse()
+        .map(row => `
+            <li>
+                <a href="${row[1]}" target="_blank" rel="noopener">
+                    ${row[0]}
+                </a>
+            </li>
+        `)
+        .join("");
+
+    document.getElementById("result").innerHTML =
+        `<div class="file-list"><ul>${html}</ul></div>`;
+}
+
+function showUl_(data){
+
+    let html = "<blockquote><ul>";
+
+    data.reverse().forEach((row,index)=>{
+
+        html += "<li>";
+
+        //if(index<data.length){//if(index<data.length-1){
+            //html += "<li><a href=" + row[1] + ">" + row[0] + "</a></li>";// + html;//
+        html += "<a href=" + row[1] + ">" + row[0] + "</a>";
+        //}
+/*
+        if(index==0){
+            //html += "<a href=" + row[1] + ">" + row[0] + "</a>";
+        }
+        else{
+            html += "<a href=" + row[1] + ">" + row[0] + "</a>";
+        }
+*/
+        html += "</li>";
+
+    });
+
+
+    html += "</ul></blockquote>";
+
+    document.getElementById("result").innerHTML = html;
+
+}
+/*
+document.getElementById("keyword").addEventListener("keydown", function (event) {
+
+    if (event.key === "Enter") {
+        search();
+    }
+
+});
+
+*/
+// 當在第一個輸入框按下 Enter
+document.getElementById("keyword").addEventListener("keydown", function (event) {
+    if (event.key === "Enter" && !event.isComposing) {
+        event.preventDefault(); // 防止表單意外送出或換行
+        document.getElementById("passwd").focus(); // 游標跳至 id 為 passwd 的輸入框
+    }
+});
+
+// 當在第二個輸入框按下 Enter，才執行搜尋
+document.getElementById("passwd").addEventListener("keydown", function (event) {
+    if (event.key === "Enter" && !event.isComposing) {
+        event.preventDefault(); // 建議補上這行，避免表單意外重整網頁
+        document.getElementById("query").focus(); /// 游標跳至 id 為 query 的
+        search();
+    }
+});
+
+</script>
