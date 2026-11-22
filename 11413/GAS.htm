@@ -76,8 +76,8 @@ function doPost(e) {
     ///for (var i = 0; i < data.length; i++) {
     for (var i = 1; i < data.length; i++) {
       var row = data[i];
-      if (row && String(row[0]).toLowerCase() === String(keyword).toLowerCase() && String(row[2]) === String(passwd)) { 
-        target=row[1];
+      if (row && String(row[2]).toLowerCase() === String(keyword).toLowerCase() && String(row[5]) === String(passwd)) { 
+        target=row[2];
         //results.push(row); // 找到符合的列加入結果
         break; // 跳離迴圈，不再往下找
       }
@@ -97,7 +97,7 @@ function doPost(e) {
     for (var i = 1; i < data.length; i++) {
       var row = data[i];
       //if (row && String(row[1]).toLowerCase() === String(keyword).toLowerCase()) {
-      if (row && String(row[1]).toLowerCase() === String(target).toLowerCase()) {
+      if (row && String(row[2]).toLowerCase() === String(target).toLowerCase()) {
         results.push(row); // 找到符合的列加入結果
         break; // 跳離迴圈，不再往下找
       }
