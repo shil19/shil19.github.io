@@ -84,6 +84,15 @@ function doPost(e) {
       }
     }
     if (!target) {
+      return ContentService
+        .createTextOutput(JSON.stringify({
+          error: "帳號或密碼錯誤"
+        }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+/*
+    if (!target) {
       return createJsonResponse({ error: "帳號或密碼錯誤" });
     }
 
