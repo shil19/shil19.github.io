@@ -16,6 +16,7 @@ function doPost(e) {
     const sheetName = pData.sheet || '基本資料';
     const keyword = pData.keyword || '';
     const passwd = pData.passwd || '';
+    const keyNo = (pData.keyNo !== undefined && pData.keyNo !== '') ? Number(pData.keyNo) : 2;
 
     const sheet_b = SpreadsheetApp
       .openById(id)
@@ -97,7 +98,7 @@ function doPost(e) {
     for (var i = 1; i < data.length; i++) {
       var row = data[i];
       //if (row && String(row[1]).toLowerCase() === String(keyword).toLowerCase()) {
-      if (row && String(row[2]).toLowerCase() === String(target).toLowerCase()) {
+      if (row && String(row[keyNo]).toLowerCase() === String(target).toLowerCase()) {
         results.push(row); // 找到符合的列加入結果
         break; // 跳離迴圈，不再往下找
       }
