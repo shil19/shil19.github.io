@@ -13,10 +13,35 @@ function doPost(e) {
     const pData = JSON.parse(e.postData.contents);
 
     // 3. 讀取參數，並同樣加上「預設值」機制
-    //const sheetName = pData.sheet || '二上一段';
+    const sheetName = pData.sheet || '基本資料';
     const keyword = pData.keyword || '';
     const passwd = pData.passwd || '';
 
+    const sheet_b = SpreadsheetApp
+      .openById(id)
+      .getSheetByName('基本資料');
+
+    if (!sheet_b) {
+      return ContentService
+        .createTextOutput(JSON.stringify({
+          error: "找不到工作表：" + '基本資料'
+        }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    const sheet = SpreadsheetApp
+      .openById(id)
+      .getSheetByName(sheetName);
+
+    if (!sheet) {
+      return ContentService
+        .createTextOutput(JSON.stringify({
+          error: "找不到工作表：" + sheetName
+        }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+/*
     const sheets = SpreadsheetApp
       .openById(id)
       .getSheets();//.getSheetByName(sheetName);
@@ -38,7 +63,12 @@ function doPost(e) {
     var target;
     var results = [];
 
+/*
     data = sheets[0]
+      .getDataRange()
+      .getValues();
+*/
+    data = sheet_b
       .getDataRange()
       .getValues();
     //results.push(data[0]);
@@ -53,7 +83,12 @@ function doPost(e) {
       }
     }
 
+/*
     data = sheets[sheets.length-1]
+      .getDataRange()
+      .getValues();
+*/
+    data = sheet
       .getDataRange()
       .getValues();
     results.push(data[0]);
