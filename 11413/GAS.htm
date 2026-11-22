@@ -83,6 +83,9 @@ function doPost(e) {
         break; // 跳離迴圈，不再往下找
       }
     }
+    if (!target) {
+      return createJsonResponse({ error: "帳號或密碼錯誤" });
+    }
 
 /*
     data = sheets[sheets.length-1]
