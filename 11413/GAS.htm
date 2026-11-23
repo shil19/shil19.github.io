@@ -16,7 +16,7 @@ function doPost(e) {
     const sheetName = pData.sheet || '基本資料';
     const keyword = pData.keyword || '';
     const passwd = pData.passwd || '';
-    const keyNo = (pData.keyNo !== undefined && pData.keyNo !== '') ? Number(pData.keyNo) : 2;
+    const keyNo = (pData.keyNo !== undefined && pData.keyNo !== '' && pData.keyNo !== null && !isNaN(Number(pData.keyNo))) ? Number(pData.keyNo) : 2;
 
     const sheet_b = SpreadsheetApp
       .openById(id)
