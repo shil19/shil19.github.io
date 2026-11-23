@@ -81,9 +81,9 @@ function search() {
       sheet: "OpenID",
       keyword: keyword,
       passwd:passwd,
-      keyNo: 1
+      keyNo: 3
     };
-    alert("準備送出的資料：\n" + JSON.stringify(payload));//
+    ///alert("準備送出的資料：\n" + JSON.stringify(payload));//
 
     fetch(baseUrl, {
       method: 'POST',
